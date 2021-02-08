@@ -4,4 +4,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
- WeatherForecast.cs
+WeatherForecast.cs
+WeatherForecastController.cs
+Notes.txt
