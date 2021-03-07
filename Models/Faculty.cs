@@ -3,13 +3,11 @@
 namespace SbornikBackend
 {
     /// <summary>
-    /// Пост ленты
+    /// Факультет
     /// </summary>
-    public class Post
+    public class Faculty
     {
         public int Id { get; set; }
-        public string Text { get; set; }
-        public List<Content> Contents { get; set; } = new List<Content>();
         public List<Hashtag> Hashtags { get; set; } = new List<Hashtag>();
     }
 }
