@@ -1,9 +1,9 @@
 ﻿namespace SbornikBackend
 {
     /// <summary>
-    /// Профиль
+    /// Пользователь
     /// </summary>
-    public class Profile
+    public class User
     {
         public int Id { get; set; }
         public string Login { get; set; }

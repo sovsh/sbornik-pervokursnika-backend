@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using SbornikBackend.DataAccess;
 
 namespace SbornikBackend
 {
@@ -31,6 +33,10 @@ namespace SbornikBackend
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "SbornikBackend", Version = "v1"});
             });
+            /*services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
