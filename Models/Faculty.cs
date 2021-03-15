@@ -8,6 +8,8 @@ namespace SbornikBackend
     public class Faculty
     {
         public int Id { get; set; }
+        public string Name { get; set; }
+        public string Info { get; set; }
         public List<Hashtag> Hashtags { get; set; } = new List<Hashtag>();
     }
 }

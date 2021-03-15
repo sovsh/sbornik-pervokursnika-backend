@@ -8,11 +8,11 @@ using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 namespace SbornikBackend.DataAccess
 {
     public class ApplicationContext: DbContext
-    {
-        public ApplicationContext()
+    { 
+        public ApplicationContext():base()
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

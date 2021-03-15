@@ -1,4 +1,7 @@
-﻿namespace SbornikBackend
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+
+namespace SbornikBackend
 {
     /// <summary>
     /// Пользователь
@@ -9,5 +12,7 @@
         public string Login { get; set; }
         public string Password { get; set; }
         public Faculty UserFaculty { get; set; }
+        public List<Hashtag>UserHashtags { get; set; }
+        public List<Post>Favorites { get; set; }
     }
 }
