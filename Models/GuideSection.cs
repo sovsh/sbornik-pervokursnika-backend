@@ -8,29 +8,29 @@ namespace SbornikBackend
     public class GuideSection
     {
         public int Id { get; set; }
+        public string Title { get; set; }
     }
     /// <summary>
     /// Статья сборника
     /// </summary>
     public class Article : GuideSection
     {
-        public string Name { get; set; }
         public string Text { get; set; }
-        public List<Content> Picturies { get; set; } = new List<Content>();
+        public List<int> ArticlePicturiesId { get; set; } = new List<int>();
     }
     /// <summary>
     /// Главная статья сборника
     /// </summary>
     public class MainArticle : Article
     {
-        public Content MainPic { get; set; }
+        public Content MainArticleMainPicture { get; set; }
     }
     /// <summary>
     /// Секция с несколькими статьями
     /// </summary>
     public class Section : GuideSection
     {
-        public Content MainPic { get; set; }
-        public List<Article> Articles = new List<Article>();
+        public Content SectionMainPicture { get; set; }
+        public List<int> ArticlesId = new List<int>();
     }
 }

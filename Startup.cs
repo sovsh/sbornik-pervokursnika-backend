@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using SbornikBackend.DataAccess;
+using SbornikBackend.Interfaces;
+using SbornikBackend.Repositories;
 
 namespace SbornikBackend
 {
@@ -29,6 +31,10 @@ namespace SbornikBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+            services.AddTransient<IFaculty, FacultyRepository>();
+            services.AddTransient<IHashtag, HashtagRepository>();
+            services.AddTransient<IPost, PostRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -36,8 +42,12 @@ namespace SbornikBackend
             });
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
+            /*services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,11 +55,10 @@ namespace SbornikBackend
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage(); 
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SbornikBackend v1"));
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();

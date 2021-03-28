@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SbornikBackend
 {
@@ -8,9 +9,10 @@ namespace SbornikBackend
     public class Post
     {
         public int Id { get; set; }
+        public DateTime Date { get; set; }
         public string Author { get; set; }
         public string Text { get; set; }
-        public List<Content> Contents { get; set; } = new List<Content>();
-        public List<Hashtag> Hashtags { get; set; } = new List<Hashtag>();
+        public List<int> ContentsId { get; set; } = new List<int>();
+        public List<int> HashtagsId { get; set; } = new List<int>();
     }
 }

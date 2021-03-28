@@ -11,8 +11,9 @@ namespace SbornikBackend
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public Faculty UserFaculty { get; set; }
-        public List<Hashtag>UserHashtags { get; set; }
-        public List<Post>Favorites { get; set; }
+        public int UserFacultyId { get; set; }
+        public virtual Faculty UserFaculty { get; set; }
+        public List<int> HashtagsId { get; set; } = new List<int>();
+        public List<int> FavoritePostsId { get; set; } = new List<int>();
     }
 }

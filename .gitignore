@@ -6,3 +6,4 @@ riderModule.iml
 .idea/
 Notes.txt
 Migrations/
+ApplicationContextFactory.cs

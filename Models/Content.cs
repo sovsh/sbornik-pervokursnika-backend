@@ -3,7 +3,7 @@
     /// <summary>
     /// Тип контента
     /// </summary>
-    enum ContentType : int
+    public enum ContentType : int
     {
         Picture,
         Gif,
@@ -15,7 +15,7 @@
     public class Content
     {
         public int Id { get; set; }
-        private ContentType Type { get; set; }
+        public ContentType Type { get; set; }
         public string Path { get; set; }
     }
 }

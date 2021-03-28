@@ -10,6 +10,6 @@ namespace SbornikBackend
         public int Id { get; set; }
         public string Name { get; set; }
         public string Info { get; set; }
-        public List<Hashtag> Hashtags { get; set; } = new List<Hashtag>();
+        public List<int> HashtagsId { get; set; } = new List<int>();
     }
 }
