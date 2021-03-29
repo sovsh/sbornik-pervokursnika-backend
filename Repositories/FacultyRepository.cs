@@ -9,17 +9,11 @@ namespace SbornikBackend.Repositories
 {
     public class FacultyRepository : IFaculty
     {
-        private readonly ApplicationContext Context;
-        private IEnumerable<Faculty> _getAllFaculties;
-
+        private readonly ApplicationContext _context;
         public FacultyRepository(ApplicationContext context)
         {
-            Context = context;
+            _context = context;
         }
-
-        public IEnumerable<Faculty> GetAllFaculties => Context.Set<Faculty>().ToList();
-        /*{
-            return Context.Set<Faculty>().ToList();
-        }*/
+        public IEnumerable<Faculty> GetAll() => _context.Faculties.ToList();
     }
 }

@@ -5,6 +5,6 @@ namespace SbornikBackend.Interfaces
 {
     public interface IPost
     {
-        IEnumerable<Post>GetAllPosts { get; }
+        IEnumerable<Post> GetAll();
     }
 }

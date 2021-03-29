@@ -6,8 +6,8 @@ namespace SbornikBackend.Interfaces
 {
     public interface IHashtag
     {
-        IEnumerable<Hashtag>GetAllHashtags { get; }
+        IEnumerable<Hashtag> GetAll();
 
-        Hashtag GetObjectHashtag(int hashtagId);
+        Hashtag Get(int id);
     }
 }

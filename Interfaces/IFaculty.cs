@@ -5,6 +5,7 @@ namespace SbornikBackend.Interfaces
 {
     public interface IFaculty
     {
-        IEnumerable<Faculty> GetAllFaculties { get; }
+        IEnumerable<Faculty> GetAll();
+
     }
 }

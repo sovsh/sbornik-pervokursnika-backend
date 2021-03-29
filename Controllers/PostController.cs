@@ -11,18 +11,18 @@ namespace SbornikBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FacultyController : ControllerBase
+    public class PostController : ControllerBase
     {
-        private readonly IFaculty _allFaculties;
+        private readonly IPost _allPosts;
 
-        public FacultyController(IFaculty faculties)
+        public PostController(IPost posts)
         {
-            _allFaculties = faculties;
+            _allPosts = posts;
         }
         [HttpGet]
-        public JsonResult GetAllFacultiesList()
+        public JsonResult GetAllpostsList()
         {
-            return new JsonResult(_allFaculties.GetAll());
+            return new JsonResult(_allPosts.GetAll());
         }
     }
 }
