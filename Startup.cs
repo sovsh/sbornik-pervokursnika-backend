@@ -40,14 +40,15 @@ namespace SbornikBackend
                 options.UseNpgsql(Configuration.GetConnectionString("Default"));
             });
             services.AddMvc();
+            services.AddScoped<IArticle, ArticleRepository>();
+            services.AddScoped<IContent, ContentRepository>();
             services.AddScoped<IFaculty, FacultyRepository>();
-            services.AddTransient<IHashtag, HashtagRepository>();
-            services.AddTransient<IPost, PostRepository>();
+            services.AddScoped<IHashtag, HashtagRepository>();
+            services.AddScoped<IMainArticle, MainArticleRepository>();
+            services.AddScoped<IPost, PostRepository>();
+            services.AddScoped<ISection, SectionRepository>();
+            services.AddScoped<IUser, UserRepository>();
             services.AddControllers();
-            /*services.AddMvc().AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
-            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
