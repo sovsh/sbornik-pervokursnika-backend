@@ -22,7 +22,9 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Article> GetAll() => _context.Articles.Where(e => e.Type == 0).ToList();
+        //public IEnumerable<Article> GetAll() => _context.Articles.Where(e => (int) e.Type == 0).ToList();
+        public IEnumerable<Article> GetAll() => _context.Set<Article>().Where(e => (int) e.Type == 0).ToList();
+
 
         public Article Get(int id) => _context.Articles.First(e => e.Id == id);
 

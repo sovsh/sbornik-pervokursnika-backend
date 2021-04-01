@@ -17,6 +17,8 @@ namespace SbornikBackend.Controllers
         {
             if (section == null) 
                 return BadRequest();
+            if ((int) section.Type != 2)
+                return BadRequest();
             if (_all.IsTableHasId(section.Id)) 
                 return BadRequest();
             _all.Add(section);
@@ -37,6 +39,8 @@ namespace SbornikBackend.Controllers
         public IActionResult Put(Section section)
         {
             if (section == null) 
+                return BadRequest();
+            if ((int) section.Type != 2)
                 return BadRequest();
             if (!_all.IsTableHasId(section.Id)) 
                 return BadRequest();

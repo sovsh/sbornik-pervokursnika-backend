@@ -17,6 +17,8 @@ namespace SbornikBackend.Controllers
         {
             if (article == null) 
                 return BadRequest();
+            if ((int) article.Type != 1)
+                return BadRequest();
             if (_all.IsTableHasId(article.Id)) 
                 return BadRequest();
             _all.Add(article);
@@ -37,6 +39,8 @@ namespace SbornikBackend.Controllers
         public IActionResult Put(MainArticle article)
         {
             if (article == null) 
+                return BadRequest();
+            if ((int) article.Type != 1)
                 return BadRequest();
             if (!_all.IsTableHasId(article.Id)) 
                 return BadRequest();
