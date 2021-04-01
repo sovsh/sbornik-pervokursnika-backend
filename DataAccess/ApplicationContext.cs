@@ -13,6 +13,7 @@ namespace SbornikBackend.DataAccess
         public DbSet<Hashtag>Hashtags { get; set; }
         public DbSet<Post>Posts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<HashtagToPostRelation>HashtagsToPostsRelation { get; set; }
         public ApplicationContext():base()
         {
             //Database.EnsureDeleted();

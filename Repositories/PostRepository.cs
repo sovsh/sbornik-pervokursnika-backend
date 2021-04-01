@@ -20,6 +20,12 @@ namespace SbornikBackend.Repositories
         {
             _context.Posts.Add(post);
             _context.SaveChanges();
+
+            foreach (var hashtag in post.HashtagsId)
+            {
+                _context.HashtagsToPostsRelation.Add(new HashtagToPostRelation {HashtagId = hashtag, PostId = post.Id});
+            }
+            _context.SaveChanges();
         }
 
         public IEnumerable<Post> GetAll() => _context.Posts.ToList();
@@ -28,13 +34,27 @@ namespace SbornikBackend.Repositories
 
         public void Update(Post post)
         {
+            var elems = _context.HashtagsToPostsRelation.Where(e => e.PostId == post.Id);
+            foreach (var elem in elems)
+            {
+                _context.HashtagsToPostsRelation.Remove(elem);
+            }
             _context.Posts.Update(post);
+            foreach (var hashtag in post.HashtagsId)
+            {
+                _context.HashtagsToPostsRelation.Add(new HashtagToPostRelation {HashtagId = hashtag, PostId = post.Id});
+            }
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var post = _context.Posts.First(e => e.Id == id);
+            var elems = _context.HashtagsToPostsRelation.Where(e => e.PostId == post.Id);
+            foreach (var elem in elems)
+            {
+                _context.HashtagsToPostsRelation.Remove(elem);
+            }
             _context.Posts.Remove(post);
             _context.SaveChanges();
         }
