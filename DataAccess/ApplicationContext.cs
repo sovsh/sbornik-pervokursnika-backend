@@ -30,14 +30,5 @@ namespace SbornikBackend.DataAccess
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=db_sbornik;Username=postgres;Password=sarang");
         }
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<Content>()
-                .Property(e => e.Type)
-                .HasConversion(
-                    v => v.ToString(),
-                    v => (ContentType)Enum.Parse(typeof(ContentType), v));
-        }*/
     }
 }

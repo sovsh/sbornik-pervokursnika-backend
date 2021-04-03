@@ -12,5 +12,6 @@ namespace SbornikBackend.Interfaces
         Hashtag Get(int id);
         void Update(Hashtag hashtag);
         void Delete(int id);
+        int Find(string name);
     }
 }

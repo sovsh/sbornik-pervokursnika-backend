@@ -45,9 +45,19 @@ namespace SbornikBackend.Controllers
             var listOfHashtags = new List<int>();
             foreach (var postHashtag in postHashtags)
             {
-                var hashtag = new Hashtag {Name = postHashtag};
-                _allHashtags.Add(hashtag);
-                listOfHashtags.Add(hashtag.Id);
+                var found = _allHashtags.Find(postHashtag);
+                if (found == -1)
+                {
+                    var hashtag = new Hashtag {Name = postHashtag};
+                    _allHashtags.Add(hashtag);
+                    listOfHashtags.Add(hashtag.Id);
+                }
+                else
+                {
+                    var hashtag = _allHashtags.Get(found);
+                    listOfHashtags.Add(hashtag.Id);
+                }
+
             }
             var post = new Post
             {

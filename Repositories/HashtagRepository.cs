@@ -25,7 +25,7 @@ namespace SbornikBackend.Repositories
         public IEnumerable<Hashtag> GetAll() => _context.Hashtags.ToList();
 
         public Hashtag Get(int id) => _context.Hashtags.First(h => h.Id == id);
-
+        
         public void Update(Hashtag hashtag)
         {
             _context.Hashtags.Update(hashtag);
@@ -37,6 +37,14 @@ namespace SbornikBackend.Repositories
             var hashtag = _context.Hashtags.First(h => h.Id == id);
             _context.Hashtags.Remove(hashtag);
             _context.SaveChanges();
+        }
+
+        public int Find(string name)
+        {
+            var found = _context.Hashtags.FirstOrDefault(e => e.Name == name);
+            if (found == null)
+                return -1;
+            return found.Id;
         }
     }
 }

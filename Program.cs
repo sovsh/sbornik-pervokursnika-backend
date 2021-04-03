@@ -22,19 +22,7 @@ namespace SbornikBackend
                 .Options;
             using (ApplicationContext db = new ApplicationContext(options))
             {
-                /*Faculty f = new Faculty {Id = 3, Name = "Истфак", Info = "Наш любимый истфак!", HashtagsId = {1, 2, 3}};
-                db.Faculties.Add(f);
-                db.SaveChanges();
-                Console.WriteLine("Объекты успешно сохранены");*/
-
-                //Hashtag hashtag1 = new Hashtag {Id = 1, Name = "мехмат"};
-                //Hashtag hashtag2 = new Hashtag {Id = 2, Name = "физфак"};
-                //db.SaveChanges();
-                //var hashtags = db.Hashtags.ToList();
-                /*foreach (Hashtag h in hashtags)
-                {
-                    Console.WriteLine($"{h.Id}   {h.Name}");
-                }*/
+                
             }
         }
 
