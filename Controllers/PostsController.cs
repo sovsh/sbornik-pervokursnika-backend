@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +11,12 @@ namespace SbornikBackend.Controllers
     [Route("[controller]")]
     public class PostsController : ControllerBase
     {
-        private readonly IPost _all;
+        private readonly IPost _allPosts;
         private readonly IContent _allContents;
         private readonly IHashtag _allHashtags;
         public PostsController(IPost posts, IContent contents, IHashtag hashtags)
         {
-            _all = posts;
+            _allPosts = posts;
             _allContents = contents;
             _allHashtags = hashtags;
         }
@@ -57,25 +56,24 @@ namespace SbornikBackend.Controllers
                     var hashtag = _allHashtags.Get(found);
                     listOfHashtags.Add(hashtag.Id);
                 }
-
             }
             var post = new Post
             {
                 Date = postDTO.Date, Author = postDTO.Author, Text = postDTO.Text, ContentsId = listOfContents,
                 HashtagsId = listOfHashtags
             };
-            _all.Add(post);
+            _allPosts.Add(post);
             return Ok(post);
         }
         [HttpGet]
         public JsonResult Get()
         {
-            return new JsonResult(_all.GetAll());
+            return new JsonResult(_allPosts.GetAll());
         }
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            return new JsonResult(_all.Get(id));
+            return new JsonResult(_allPosts.Get(id));
         }
 
         [HttpPut]
@@ -83,18 +81,18 @@ namespace SbornikBackend.Controllers
         {
             if (post == null) 
                 return BadRequest();
-            if (!_all.IsTableHasId(post.Id)) 
+            if (!_allPosts.IsTableHasId(post.Id)) 
                 return BadRequest();
-            _all.Update(post);
+            _allPosts.Update(post);
             return Ok(post);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (!_all.IsTableHasId(id)) 
+            if (!_allPosts.IsTableHasId(id)) 
                 return BadRequest();
-            _all.Delete(id);
+            _allPosts.Delete(id);
             return Ok(id);
         }
     }
