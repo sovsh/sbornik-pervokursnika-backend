@@ -41,6 +41,6 @@ namespace SbornikBackend
     public class Section : GuideSection
     {
         public int SectionMainPicture { get; set; }
-        public List<int> ArticlesId = new List<int>();
+        public List<int> ArticlesId { get; set; } = new List<int>();
     }
 }

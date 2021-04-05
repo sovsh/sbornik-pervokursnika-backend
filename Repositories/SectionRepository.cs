@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SbornikBackend.DataAccess;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Repositories
@@ -22,9 +23,43 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Section> GetAll() => _context.Sections.Where(e => (int) e.Type == 2).ToList();
+        public IEnumerable<SectionDTO> GetAll()
+        {
+            var sections = _context.Sections.Where(e => (int) e.Type == 2).ToList();
+            var res = new List<SectionDTO>();
+            foreach (var section in sections)
+            {
+                var articles = new Dictionary<int, string>();
+                foreach (var id in section.ArticlesId)
+                {
+                    articles.Add(id, _context.Articles.First(e => e.Id == id).Title);
+                }
+                var sectionDTO = new SectionDTO
+                {
+                    Id = section.Id, Type = section.Type, Title = section.Title,
+                    SectionMainPicture = section.SectionMainPicture, Articles = articles
+                };
+                res.Add(sectionDTO);
+            }
+            return res;
+        }//=> _context.Sections.Where(e => (int) e.Type == 2).ToList();
 
-        public Section Get(int id) => _context.Sections.First(e => e.Id == id);
+        public SectionDTO Get(int id)
+        {
+            var section =_context.Sections.First(e => e.Id == id);
+            var articles = new Dictionary<int, string>();
+            foreach (var articlesId in section.ArticlesId)
+            {
+                articles.Add(articlesId, _context.Articles.First(e => e.Id == articlesId).Title);
+            }
+            var sectionDTO = new SectionDTO
+            {
+                Id = section.Id, Type = section.Type, Title = section.Title,
+                SectionMainPicture = section.SectionMainPicture, Articles = articles
+            };
+            return sectionDTO;
+        }
+        //_context.Sections.First(e => e.Id == id);
 
         public void Update(Section section)
         {

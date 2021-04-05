@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SbornikBackend.DTOs;
 
 namespace SbornikBackend.Interfaces
 {
@@ -6,8 +7,8 @@ namespace SbornikBackend.Interfaces
     {
         bool IsTableHasId(int id);
         void Add(Section section);
-        IEnumerable<Section> GetAll();
-        Section Get(int id);
+        IEnumerable<SectionDTO> GetAll();
+        SectionDTO Get(int id);
         void Update(Section section);
         void Delete(int id);
     }
