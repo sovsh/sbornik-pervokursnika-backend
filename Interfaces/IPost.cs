@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using SbornikBackend.DTOs;
 
 namespace SbornikBackend.Interfaces
 {
@@ -8,10 +9,10 @@ namespace SbornikBackend.Interfaces
     {
         bool IsTableHasId(int id);
         void Add(Post post);
-        IEnumerable<Post> GetAll();
-        IEnumerable<Post> GetAll(List<int> hashtags);
-        IEnumerable<Post> GetAll(List<int> hashtags, DateTime date);
-        Post Get(int id);
+        IEnumerable<PostDTO> GetAll();
+        IEnumerable<PostDTO> GetAll(List<int> hashtags);
+        IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date);
+        PostDTO Get(int id);
         void Update(Post post);
         void Delete(int id);
     }

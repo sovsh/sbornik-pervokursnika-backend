@@ -16,14 +16,6 @@ namespace SbornikBackend
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-            var options = optionsBuilder
-                .UseNpgsql("Host=localhost;Port=5432;Database=db_sbornik;Username=postgres;Password=sarang")
-                .Options;
-            using (ApplicationContext db = new ApplicationContext(options))
-            {
-                
-            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

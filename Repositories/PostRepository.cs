@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SbornikBackend.DataAccess;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Repositories
@@ -37,37 +38,129 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Post> GetAll() => _context.Posts.ToList();
-        public IEnumerable<Post> GetAll(List<int> hashtags)
+        public IEnumerable<PostDTO> GetAll()
         {
-            //HashSet<Post> res = new HashSet<Post>();
-            var res = new SortedSet<Post>(new PostsComparer());
+            var posts = _context.Posts.ToList();
+            var res = new List<PostDTO>();
+            foreach (var post in posts)
+            {
+                var contents = new List<ContentDTO>();
+                var hashtags = new List<string>();
+                foreach (var id in post.ContentsId)
+                {
+                    string uri = _context.Contents.First(e => e.Id == id).Path;
+                    var content = new ContentDTO {Id = id, Uri = uri};
+                    contents.Add(content);
+                }
+                
+                foreach (var id in post.HashtagsId)
+                {
+                    string name = _context.Hashtags.First(e => e.Id == id).Name;
+                    hashtags.Add(name);
+                }
+
+                var postDTO = new PostDTO
+                {
+                    Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
+                    Hashtags = hashtags
+                };
+                res.Add(postDTO);
+            }
+            return res;
+        }
+        public IEnumerable<PostDTO> GetAll(List<int> hashtags)
+        {
+            var res = new HashSet<PostDTO>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag));
+                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag)).ToList();
                 foreach (var post in posts)
                 {
-                    res.Add(post);
+                    var contents = new List<ContentDTO>();
+                    var _hashtags = new List<string>();
+                    foreach (var id in post.ContentsId)
+                    {
+                        string uri = _context.Contents.First(e => e.Id == id).Path;
+                        var content = new ContentDTO {Id = id, Uri = uri};
+                        contents.Add(content);
+                    }
+                
+                    foreach (var id in post.HashtagsId)
+                    {
+                        string name = _context.Hashtags.First(e => e.Id == id).Name;
+                        _hashtags.Add(name);
+                    }
+
+                    var postDTO = new PostDTO
+                    {
+                        Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
+                        Hashtags = _hashtags
+                    };
+                    res.Add(postDTO);
                 }
             }
             return res.ToList();
         }
 
-        public IEnumerable<Post> GetAll(List<int> hashtags, DateTime date)
+        public IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date)
         {
-            var res = new SortedSet<Post>(new PostsComparer());
+            var res = new HashSet<PostDTO>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date);
+                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date).ToList();
                 foreach (var post in posts)
                 {
-                    res.Add(post);
+                    var contents = new List<ContentDTO>();
+                    var _hashtags = new List<string>();
+                    foreach (var id in post.ContentsId)
+                    {
+                        string uri = _context.Contents.First(e => e.Id == id).Path;
+                        var content = new ContentDTO {Id = id, Uri = uri};
+                        contents.Add(content);
+                    }
+                
+                    foreach (var id in post.HashtagsId)
+                    {
+                        string name = _context.Hashtags.First(e => e.Id == id).Name;
+                        _hashtags.Add(name);
+                    }
+
+                    var postDTO = new PostDTO
+                    {
+                        Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
+                        Hashtags = _hashtags
+                    };
+                    res.Add(postDTO);
                 }
             }
             return res.ToList();
         }
 
-        public Post Get(int id) => _context.Posts.First(e => e.Id == id);
+        public PostDTO Get(int id)
+        {
+            var post = _context.Posts.First(e => e.Id == id);
+            var contents = new List<ContentDTO>();
+            var hashtags = new List<string>();
+            foreach (var _id in post.ContentsId)
+            {
+                string uri = _context.Contents.First(e => e.Id == _id).Path;
+                var content = new ContentDTO {Id = _id, Uri = uri};
+                contents.Add(content);
+            }
+                
+            foreach (var _id in post.HashtagsId)
+            {
+                string name = _context.Hashtags.First(e => e.Id == _id).Name;
+                hashtags.Add(name);
+            }
+
+            var postDTO = new PostDTO
+            {
+                Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
+                Hashtags = hashtags
+            };
+            return postDTO;
+        }
 
         public void Update(Post post)
         {

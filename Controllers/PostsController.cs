@@ -29,14 +29,14 @@ namespace SbornikBackend.Controllers
             var listOfContents = new List<int>();
             foreach (var postContent in postContents)
             {
-                var uri = postContent.Uri;
+                /*var uri = postContent.Uri;
                 var ext = uri.Split('/').Last().Split('.').Skip(1).First().Split('?').First();
                 var filename = $@"Files\{System.Guid.NewGuid()}.{ext}";
                 using (var client = new WebClient())
                 {
                     client.DownloadFile(uri,filename);
-                }
-                var content = new Content {Path = filename, Type = postContent.Type};
+                }*/
+                var content = new Content {Id = postContent.Id, Path = postContent.Uri};
                 _allContents.Add(content);
                 listOfContents.Add(content.Id);
             }

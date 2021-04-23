@@ -9,7 +9,7 @@ namespace SbornikBackend.DTOs
         public List<string>Hashtags { get; set; }
     }
 
-    public class PostHashtagDateDTO : PostHashtagsDTO
+    public class PostHashtagsDateDTO : PostHashtagsDTO
     {
         public DateTime Date { get; set; }
     }

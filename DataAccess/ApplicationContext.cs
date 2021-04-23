@@ -17,18 +17,12 @@ namespace SbornikBackend.DataAccess
         public ApplicationContext():base()
         {
             //Database.EnsureDeleted();
-            //Database.EnsureCreated();
-            
+            Database.EnsureCreated();
         }
         public ApplicationContext(DbContextOptions<ApplicationContext>options):base(options)
         {
             //Database.EnsureDeleted();
             Database.EnsureCreated();
-            
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=db_sbornik;Username=postgres;Password=sarang");
         }
     }
 }
