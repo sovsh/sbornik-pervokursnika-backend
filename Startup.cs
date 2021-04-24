@@ -37,16 +37,16 @@ namespace SbornikBackend
             });
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("Default"));
+                //options.UseNpgsql(Configuration.GetConnectionString("Default"));
+                options.UseNpgsql(Configuration.GetConnectionString("Mine"));
+
             });
             services.AddMvc();
-            services.AddScoped<IArticle, ArticleRepository>();
             services.AddScoped<IContent, ContentRepository>();
             services.AddScoped<IFaculty, FacultyRepository>();
             services.AddScoped<IHashtag, HashtagRepository>();
-            services.AddScoped<IMainArticle, MainArticleRepository>();
             services.AddScoped<IPost, PostRepository>();
-            services.AddScoped<ISection, SectionRepository>();
+            services.AddScoped<IGuideSection, GuideSectionRepository>();
             services.AddScoped<IUser, UserRepository>();
             services.AddControllers();
         }

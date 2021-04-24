@@ -5,19 +5,25 @@ namespace SbornikBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ArticlesController:ControllerBase
+    public class MainSectionsController : ControllerBase
     {
         private readonly IGuideSection _allSections;
 
-        public ArticlesController(IGuideSection sections)
+        public MainSectionsController(IGuideSection sections)
         {
             _allSections = sections;
+        }
+
+        [HttpGet]
+        public JsonResult Get()
+        {
+            return new JsonResult(_allSections.GetAllMainSection());
         }
 
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            return new JsonResult(_allSections.Get(id));
+            return new JsonResult(_allSections.GetAllArticles(id));
         }
     }
 }

@@ -6,10 +6,8 @@ namespace SbornikBackend.DataAccess
     {
         public DbSet<Content>Contents{ get; set; }
         public DbSet<Faculty>Faculties { get; set; }
+        public DbSet<Contact>Contacts { get; set; }
         public DbSet<GuideSection> Guide { get; set; }
-        public DbSet<Article> Articles { get; set; }
-        public DbSet<MainArticle> MainArticles { get; set; }
-        public DbSet<Section> Sections { get; set; }
         public DbSet<Hashtag>Hashtags { get; set; }
         public DbSet<Post>Posts { get; set; }
         public DbSet<User> Users { get; set; }

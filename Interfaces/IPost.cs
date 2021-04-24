@@ -13,6 +13,7 @@ namespace SbornikBackend.Interfaces
         IEnumerable<PostDTO> GetAll(List<int> hashtags);
         IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date);
         PostDTO Get(int id);
+        PostDTO GetLast();
         void Update(Post post);
         void Delete(int id);
     }

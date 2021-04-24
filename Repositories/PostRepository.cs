@@ -162,6 +162,13 @@ namespace SbornikBackend.Repositories
             return postDTO;
         }
 
+        public PostDTO GetLast()
+        {
+            var dateTime = _context.Posts.Select(p => p.Date).Max();
+            var id = _context.Posts.Last(p => p.Date == dateTime).Id;
+            return Get(id);
+        }
+
         public void Update(Post post)
         {
             var elems = _context.HashtagsToPostsRelation.Where(e => e.PostId == post.Id);

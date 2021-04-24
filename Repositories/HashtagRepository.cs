@@ -16,6 +16,13 @@ namespace SbornikBackend.Repositories
 
         public bool IsTableHasId(int id) => _context.Hashtags.Any(h => h.Id == id);
 
+        public bool IsTableHasHashtag(int id, string name)
+        {
+            if (IsTableHasId(id))
+                return true;
+            return _context.Hashtags.Any(h => h.Name.Equals(name));
+        }
+
         public void Add(Hashtag hashtag)
         {
             _context.Hashtags.Add(hashtag);

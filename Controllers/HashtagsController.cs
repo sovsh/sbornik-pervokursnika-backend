@@ -12,16 +12,18 @@ namespace SbornikBackend.Controllers
         {
             _all = hashtags;
         }
+
         [HttpPost]
         public IActionResult Post(Hashtag hashtag)
         {
-            if (hashtag == null) 
+            if (hashtag == null)
                 return BadRequest();
-            if (_all.IsTableHasId(hashtag.Id)) 
+            if (_all.IsTableHasHashtag(hashtag.Id, hashtag.Name))
                 return BadRequest();
             _all.Add(hashtag);
             return Ok(hashtag);
         }
+
         [HttpGet]
         public JsonResult Get()
         {
