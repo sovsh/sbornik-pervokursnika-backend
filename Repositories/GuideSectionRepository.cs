@@ -24,24 +24,37 @@ namespace SbornikBackend.Repositories
 
         public IEnumerable<int> GetAllArticles(int parentId) =>
             _context.Guide.Where(a => parentId == a.Id).Select(a => a.Id).ToList();
-        
-        public IEnumerable<MainSectionDTO> GetAllMainSection()
+
+        public IEnumerable<MainSectionDTO> GetAllMainSections()
         {
             var res = new List<MainSectionDTO>();
             foreach (var guideSection in _context.Guide)
             {
-                if (guideSection.ParentId != -1)
+                if (guideSection.IsMain)
                     continue;
-                var children = GetAllArticles(guideSection.Id);
-                var type = children.Count() == 1 ? "article" : "section";
                 var mainSectionDTO = new MainSectionDTO
-                    {Id = guideSection.Id, Picture = guideSection.Picture, Title = guideSection.Title, Type = type};
+                    {Id = guideSection.Id, Picture = guideSection.Picture, Title = guideSection.Title};
                 res.Add(mainSectionDTO);
             }
+
             return res;
         }
 
+        public SectionDTO GetSection(int id, List<GuideSection>articles)
+        {
+            var articlesDictionary = new Dictionary<int, string>();
+            foreach (var article in articles)
+                articlesDictionary.Add(article.Id, article.Title);
+            return new SectionDTO {Data = articlesDictionary};
+        }
+
+        public IEnumerable<GuideSection> GetAll() => _context.Guide.ToList();
+
         public GuideSection Get(int id) => _context.Guide.First(e => e.Id == id);
+        public List<GuideSection> GetChildrenArticles(int parentId)
+        {
+            return _context.Guide.Where(a => a.ParentId == parentId).ToList();
+        }
 
         public void Update(GuideSection guideSection)
         {

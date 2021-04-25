@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace SbornikBackend
+namespace SbornikBackend.DTOs
 {
-    /// <summary>
-    /// Контакт сотрудника факультета/студсовета
-    /// </summary>
-    public class Contact
+    public class ContactDTO
     {
-        public int Id { get; set; }
-        public int FacultyId { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
         public string PhoneNumber { get; set; }

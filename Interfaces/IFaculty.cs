@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SbornikBackend.DTOs;
 
 namespace SbornikBackend.Interfaces
 {
@@ -8,6 +9,7 @@ namespace SbornikBackend.Interfaces
         void Add(Faculty faculty);
         IEnumerable<Faculty> GetAll();
         Faculty Get(int id);
+        FacultyDTO GetDTO(string name);
         void Update(Faculty faculty);
         void Delete(int id);
     }

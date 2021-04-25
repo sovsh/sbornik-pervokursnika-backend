@@ -5,49 +5,53 @@ namespace SbornikBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FacultiesController : ControllerBase
+    public class ContactsController : ControllerBase
     {
-        private readonly IFaculty _all;
-        public FacultiesController(IFaculty faculties)
+        private readonly IContact _all;
+
+        public ContactsController(IContact contacts)
         {
-            _all = faculties;
+            _all = contacts;
         }
+
         [HttpPost]
-        public IActionResult Post(Faculty faculty)
+        public IActionResult Post(Contact contact)
         {
-            if (faculty == null) 
+            if (contact == null)
                 return BadRequest();
-            if (_all.IsTableHasId(faculty.Id)) 
+            if (_all.IsTableHasId(contact.Id))
                 return BadRequest();
-            _all.Add(faculty);
-            return Ok(faculty);
+            _all.Add(contact);
+            return Ok(contact);
         }
+
         [HttpGet]
         public JsonResult Get()
         {
             return new JsonResult(_all.GetAll());
         }
+
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
             return new JsonResult(_all.Get(id));
         }
-        
+
         [HttpPut]
-        public IActionResult Put(Faculty faculty)
+        public IActionResult Put(Contact contact)
         {
-            if (faculty == null) 
+            if (contact == null)
                 return BadRequest();
-            if (!_all.IsTableHasId(faculty.Id)) 
+            if (!_all.IsTableHasId(contact.Id))
                 return BadRequest();
-            _all.Update(faculty);
-            return Ok(faculty);
+            _all.Update(contact);
+            return Ok(contact);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (!_all.IsTableHasId(id)) 
+            if (!_all.IsTableHasId(id))
                 return BadRequest();
             _all.Delete(id);
             return Ok(id);

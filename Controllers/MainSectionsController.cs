@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -17,13 +20,18 @@ namespace SbornikBackend.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            return new JsonResult(_allSections.GetAllMainSection());
+            return new JsonResult(_allSections.GetAllMainSections());
         }
 
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            return new JsonResult(_allSections.GetAllArticles(id));
+            var articles = _allSections.GetChildrenArticles(id);
+            if (!articles.Any())
+                return new JsonResult("Error");
+            if (articles.Count() == 1)
+                return new JsonResult(new ArticleDTO {Data = articles.First()});
+            return new JsonResult(_allSections.GetSection(id, articles));
         }
     }
 }

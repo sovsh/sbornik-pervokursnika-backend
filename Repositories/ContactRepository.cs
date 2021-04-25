@@ -1,0 +1,42 @@
+﻿using System.Collections.Generic;
+using SbornikBackend.DataAccess;
+using SbornikBackend.Interfaces;
+using System.Linq;
+
+namespace SbornikBackend.Repositories
+{
+    public class ContactRepository:IContact
+    {
+        private readonly ApplicationContext _context;
+
+        public ContactRepository(ApplicationContext context)
+        {
+            _context = context;
+        }
+
+        public bool IsTableHasId(int id) => _context.Contacts.Any(f => f.Id == id);
+
+        public void Add(Contact contact)
+        {
+            _context.Contacts.Add(contact);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Contact> GetAll() => _context.Contacts.ToList();
+
+        public Contact Get(int id) => _context.Contacts.First(c => c.Id == id);
+
+        public void Update(Contact contact)
+        {
+            _context.Contacts.Update(contact);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var contact = Get(id);
+            _context.Contacts.Remove(contact);
+            _context.SaveChanges();
+        }
+    }
+}
