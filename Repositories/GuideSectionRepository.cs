@@ -22,15 +22,12 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<int> GetAllArticles(int parentId) =>
-            _context.Guide.Where(a => parentId == a.Id).Select(a => a.Id).ToList();
-
         public IEnumerable<MainSectionDTO> GetAllMainSections()
         {
             var res = new List<MainSectionDTO>();
-            foreach (var guideSection in _context.Guide)
+            foreach (var guideSection in _context.Guide.OrderBy(e=>e.Id))
             {
-                if (guideSection.IsMain)
+                if (!guideSection.IsMain)
                     continue;
                 var mainSectionDTO = new MainSectionDTO
                     {Id = guideSection.Id, Picture = guideSection.Picture, Title = guideSection.Title};
@@ -48,7 +45,7 @@ namespace SbornikBackend.Repositories
             return new SectionDTO {Data = articlesDictionary};
         }
 
-        public IEnumerable<GuideSection> GetAll() => _context.Guide.ToList();
+        public IEnumerable<GuideSection> GetAll() => _context.Guide.OrderBy(e => e.Id).ToList();
 
         public GuideSection Get(int id) => _context.Guide.First(e => e.Id == id);
         public List<GuideSection> GetChildrenArticles(int parentId)

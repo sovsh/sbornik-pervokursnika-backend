@@ -29,7 +29,7 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Hashtag> GetAll() => _context.Hashtags.ToList();
+        public IEnumerable<Hashtag> GetAll() => _context.Hashtags.OrderBy(e=>e.Id).ToList();
 
         public Hashtag Get(int id) => _context.Hashtags.First(h => h.Id == id);
         

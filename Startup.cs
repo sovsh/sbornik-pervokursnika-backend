@@ -38,7 +38,7 @@ namespace SbornikBackend
             services.AddDbContext<ApplicationContext>(options =>
             {
                 //options.UseNpgsql(Configuration.GetConnectionString("Default"));
-                options.UseNpgsql(Configuration.GetConnectionString("Mine"));
+                options.UseNpgsql(Configuration.GetConnectionString("Default"));
 
             });
             services.AddMvc();

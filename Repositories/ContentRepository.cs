@@ -22,7 +22,7 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Content> GetAll() => _context.Contents.ToList();
+        public IEnumerable<Content> GetAll() => _context.Contents.OrderBy(e=>e.Id).ToList();
 
         public Content Get(int id) => _context.Contents.First(e => e.Id == id);
 

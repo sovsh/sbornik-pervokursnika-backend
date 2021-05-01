@@ -73,7 +73,7 @@ namespace SbornikBackend.Repositories
             var res = new HashSet<PostDTO>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag)).ToList();
+                var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).ToList();
                 foreach (var post in posts)
                 {
                     var contents = new List<ContentDTO>();
@@ -107,7 +107,7 @@ namespace SbornikBackend.Repositories
             var res = new HashSet<PostDTO>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date).ToList();
+                var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date).ToList();
                 foreach (var post in posts)
                 {
                     var contents = new List<ContentDTO>();
@@ -163,9 +163,8 @@ namespace SbornikBackend.Repositories
         }
 
         public PostDTO GetLast()
-        {
-            var dateTime = _context.Posts.Select(p => p.Date).Max();
-            var id = _context.Posts.Last(p => p.Date == dateTime).Id;
+        { 
+            var id = _context.Posts.OrderByDescending(e => e.Date).First().Id;
             return Get(id);
         }
 
