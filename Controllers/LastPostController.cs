@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -8,15 +9,24 @@ namespace SbornikBackend.Controllers
     public class LastPostController:ControllerBase
     {
         private readonly IPost _allPosts;
-        public LastPostController(IPost posts)
+        private readonly IHashtag _allHashtags;
+        public LastPostController(IPost posts, IHashtag hashtags)
         {
             _allPosts = posts;
+            _allHashtags = hashtags;
         }
 
-        [HttpGet]
-        public JsonResult Get()
+        [HttpPut]
+        public JsonResult Get(List<string>hashtags)
         {
-            return new JsonResult(_allPosts.GetLast());
+            List<int> hashtagsId = new List<int>();
+            foreach (var hashtag in hashtags)
+            {
+                int id = _allHashtags.Find(hashtag);
+                if (id != -1)
+                    hashtagsId.Add(id);
+            }
+            return new JsonResult(_allPosts.GetLast(hashtagsId));
         }
     }
 }

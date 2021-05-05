@@ -162,10 +162,10 @@ namespace SbornikBackend.Repositories
             return postDTO;
         }
 
-        public PostDTO GetLast()
-        { 
-            var id = _context.Posts.OrderByDescending(e => e.Date).First().Id;
-            return Get(id);
+        public PostDTO GetLast(List<int> hashtagsId)
+        {
+            //var id = _context.Posts.OrderByDescending(e => e.Date).First().Id;
+            return GetAll(hashtagsId).First();
         }
 
         public void Update(Post post)
