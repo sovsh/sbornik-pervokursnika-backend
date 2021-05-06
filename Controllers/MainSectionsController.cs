@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+//using Newtonsoft.Json;
 using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
@@ -31,7 +33,7 @@ namespace SbornikBackend.Controllers
                 return new JsonResult("Error");
             if (articles.Count() == 1)
                 return new JsonResult(new ArticleDTO {Data = articles.First()});
-            return new JsonResult(_allSections.GetSection(id, articles));
+            return new JsonResult(_allSections.GetSection(articles));
         }
     }
 }

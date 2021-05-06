@@ -37,12 +37,12 @@ namespace SbornikBackend.Repositories
             return res;
         }
 
-        public SectionDTO GetSection(int id, List<GuideSection>articles)
+        public SectionDTO GetSection(List<GuideSection> articles)
         {
-            var articlesDictionary = new Dictionary<int, string>();
+            var articlesDTO = new List<SectionArticleDTO>();
             foreach (var article in articles)
-                articlesDictionary.Add(article.Id, article.Title);
-            return new SectionDTO {Data = articlesDictionary};
+                articlesDTO.Add(new SectionArticleDTO {Id = article.Id, Title = article.Title});
+            return new SectionDTO {Data = articlesDTO};
         }
 
         public IEnumerable<GuideSection> GetAll() => _context.Guide.OrderBy(e => e.Id).ToList();

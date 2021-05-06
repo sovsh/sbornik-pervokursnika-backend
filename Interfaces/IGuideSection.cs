@@ -8,7 +8,7 @@ namespace SbornikBackend.Interfaces
         bool IsTableHasId(int id);
         void Add(GuideSection guideSection);
         IEnumerable<MainSectionDTO> GetAllMainSections();
-        SectionDTO GetSection(int id, List<GuideSection> articles);
+        SectionDTO GetSection(List<GuideSection> articles);
         IEnumerable<GuideSection> GetAll();
         GuideSection Get(int id);
         List<GuideSection> GetChildrenArticles(int parentId);
