@@ -14,16 +14,18 @@ namespace SbornikBackend.Controllers
         private readonly IPost _allPosts;
         private readonly IContent _allContents;
         private readonly IHashtag _allHashtags;
+
         public PostsController(IPost posts, IContent contents, IHashtag hashtags)
         {
             _allPosts = posts;
             _allContents = contents;
             _allHashtags = hashtags;
         }
+
         [HttpPost]
         public IActionResult Post(PostDTO postDTO)
         {
-            if (postDTO == null) 
+            if (postDTO == null)
                 return BadRequest();
             var postContents = postDTO.Contents;
             var listOfContents = new List<int>();
@@ -33,6 +35,7 @@ namespace SbornikBackend.Controllers
                 _allContents.Add(content);
                 listOfContents.Add(content.Id);
             }
+
             var postHashtags = postDTO.Hashtags;
             var listOfHashtags = new List<int>();
             foreach (var postHashtag in postHashtags)
@@ -50,6 +53,7 @@ namespace SbornikBackend.Controllers
                     listOfHashtags.Add(hashtag.Id);
                 }
             }
+
             var post = new Post
             {
                 Date = postDTO.Date, Author = postDTO.Author, Text = postDTO.Text, ContentsId = listOfContents,
@@ -58,11 +62,13 @@ namespace SbornikBackend.Controllers
             _allPosts.Add(post);
             return Ok(post);
         }
+
         [HttpGet]
         public JsonResult Get()
         {
             return new JsonResult(_allPosts.GetAll());
         }
+
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
@@ -72,9 +78,9 @@ namespace SbornikBackend.Controllers
         [HttpPut]
         public IActionResult Put(Post post)
         {
-            if (post == null) 
+            if (post == null)
                 return BadRequest();
-            if (!_allPosts.IsTableHasId(post.Id)) 
+            if (!_allPosts.IsTableHasId(post.Id))
                 return BadRequest();
             _allPosts.Update(post);
             return Ok(post);
@@ -83,10 +89,11 @@ namespace SbornikBackend.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (!_allPosts.IsTableHasId(id)) 
+            if (!_allPosts.IsTableHasId(id))
                 return BadRequest();
             _allPosts.Delete(id);
             return Ok(id);
         }
+
     }
 }

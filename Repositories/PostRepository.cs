@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SbornikBackend.DataAccess;
 using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
@@ -25,6 +26,38 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasId(int id) => _context.Posts.Any(e => e.Id == id);
+
+        public PostDTO CreatePostDTO(Post post)
+        {
+            var contents = new List<ContentDTO>();
+            var hashtags = new List<string>();
+            foreach (var id in post.ContentsId)
+            {
+                string uri = _context.Contents.First(e => e.Id == id).Path;
+                var content = new ContentDTO {Id = id, Uri = uri};
+                contents.Add(content);
+            }
+
+            foreach (var id in post.HashtagsId)
+            {
+                string name = _context.Hashtags.First(e => e.Id == id).Name;
+                hashtags.Add(name);
+            }
+
+            return new PostDTO
+            {
+                Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
+                Hashtags = hashtags
+            };
+        }
+
+        public List<PostDTO> CreatePostDTOs(List<Post> posts)
+        {
+            var result = new List<PostDTO>();
+            foreach (var post in posts)
+                result.Add(CreatePostDTO(post));
+            return result;
+        }
 
         public void Add(Post post)
         {
@@ -136,6 +169,17 @@ namespace SbornikBackend.Repositories
             return res.ToList();
         }
 
+        public IEnumerable<PostDTO> GetAll(string searchString)
+        {
+            /*string ss = searchString.ToLower();
+            var posts = _context.Posts.Where(p => p.Text.ToLower().Contains(ss) || p.Author.ToLower().Contains(ss))
+                .ToList();
+            return CreatePostDTOs(posts);*/
+            string pattern = "%" + searchString + "%";
+            return CreatePostDTOs(_context.Posts.Where(p =>
+                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") || EF.Functions.Like(p.Text.ToLower(), searchString.ToLower())).ToList());
+        }
+
         public PostDTO Get(int id)
         {
             var post = _context.Posts.First(e => e.Id == id);
@@ -164,7 +208,6 @@ namespace SbornikBackend.Repositories
 
         public PostDTO GetLast(List<int> hashtagsId)
         {
-            //var id = _context.Posts.OrderByDescending(e => e.Date).First().Id;
             return GetAll(hashtagsId).First();
         }
 
