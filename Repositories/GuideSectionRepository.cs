@@ -16,6 +16,7 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasId(int id) => _context.Guide.Any(e => e.Id == id);
+
         public void Add(GuideSection guideSection)
         {
             _context.Guide.Add(guideSection);
@@ -33,7 +34,6 @@ namespace SbornikBackend.Repositories
                     {Id = guideSection.Id, Picture = guideSection.Picture, Title = guideSection.Title};
                 res.Add(mainSectionDTO);
             }
-
             return res;
         }
 

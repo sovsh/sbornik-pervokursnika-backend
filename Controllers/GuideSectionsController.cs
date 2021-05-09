@@ -22,8 +22,6 @@ namespace SbornikBackend.Controllers
             if (_allGuideSections.IsTableHasId(guideSection.Id))
                 return BadRequest();
             _allGuideSections.Add(guideSection);
-            /*if (guideSection.IsMain)
-                guideSection.ParentId = -1;*/
             return Ok(guideSection);
         }
 
