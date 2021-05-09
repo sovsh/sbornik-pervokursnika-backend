@@ -30,7 +30,7 @@ namespace SbornikBackend.Controllers
         {
             var articles = _allSections.GetChildrenArticles(id);
             if (!articles.Any())
-                return new JsonResult("Error");
+                return new JsonResult(_allSections.Get(id));
             if (articles.Count() == 1)
                 return new JsonResult(new ArticleDTO {Data = articles.First()});
             return new JsonResult(_allSections.GetSection(articles));

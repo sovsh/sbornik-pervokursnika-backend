@@ -62,6 +62,12 @@ namespace SbornikBackend.Repositories
         public void Delete(int id)
         {
             var section = _context.Guide.First(e => e.Id == id);
+            if (section.IsMain)
+            {
+                var articles = _context.Guide.Where(e => e.ParentId == id);
+                foreach (var article in articles)
+                    article.ParentId = 0;
+            }
             _context.Guide.Remove(section);
             _context.SaveChanges();
         }
