@@ -8,6 +8,20 @@ using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Repositories
 {
+    public class PostsComparer : IEqualityComparer<PostDTO>
+    {
+        public bool Equals(PostDTO? x, PostDTO? y)
+        {
+            if (x == null || y == null)
+                return false;
+            return x.Id == y.Id;
+        }
+
+        public int GetHashCode(PostDTO obj)
+        {
+            return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Id);
+        }
+    }
     public class PostRepository : IPost
     {
         private readonly ApplicationContext _context;
@@ -15,14 +29,6 @@ namespace SbornikBackend.Repositories
         public PostRepository(ApplicationContext context)
         {
             _context = context;
-        }
-
-        internal class PostsComparer : IComparer<Post>
-        {
-            public int Compare(Post x, Post y)
-            {
-                return y.Date.CompareTo(x.Date);
-            }
         }
 
         public bool IsTableHasId(int id) => _context.Posts.Any(e => e.Id == id);
@@ -74,65 +80,19 @@ namespace SbornikBackend.Repositories
         public IEnumerable<PostDTO> GetAll()
         {
             var posts = _context.Posts.ToList();
-            var res = new List<PostDTO>();
-            foreach (var post in posts)
-            {
-                var contents = new List<ContentDTO>();
-                var hashtags = new List<string>();
-                foreach (var id in post.ContentsId)
-                {
-                    string uri = _context.Contents.First(e => e.Id == id).Path;
-                    var content = new ContentDTO {Id = id, Uri = uri};
-                    contents.Add(content);
-                }
-                
-                foreach (var id in post.HashtagsId)
-                {
-                    string name = _context.Hashtags.First(e => e.Id == id).Name;
-                    hashtags.Add(name);
-                }
-
-                var postDTO = new PostDTO
-                {
-                    Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
-                    Hashtags = hashtags
-                };
-                res.Add(postDTO);
-            }
-            return res;
+            return CreatePostDTOs(posts);
         }
         public IEnumerable<PostDTO> GetAll(List<int> hashtags)
         {
-            var res = new HashSet<PostDTO>();
+            var res = new HashSet<PostDTO>(new PostsComparer());
             foreach (var hashtag in hashtags)
             {
                 var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).ToList();
-                foreach (var post in posts)
-                {
-                    var contents = new List<ContentDTO>();
-                    var _hashtags = new List<string>();
-                    foreach (var id in post.ContentsId)
-                    {
-                        string uri = _context.Contents.First(e => e.Id == id).Path;
-                        var content = new ContentDTO {Id = id, Uri = uri};
-                        contents.Add(content);
-                    }
-                
-                    foreach (var id in post.HashtagsId)
-                    {
-                        string name = _context.Hashtags.First(e => e.Id == id).Name;
-                        _hashtags.Add(name);
-                    }
-
-                    var postDTO = new PostDTO
-                    {
-                        Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
-                        Hashtags = _hashtags
-                    };
+                var postDTOs = CreatePostDTOs(posts);
+                foreach (var postDTO in postDTOs)
                     res.Add(postDTO);
-                }
             }
-            return res.ToList();
+            return res.OrderByDescending(e=>e.Date).ToList();
         }
 
         public IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date)
@@ -141,40 +101,15 @@ namespace SbornikBackend.Repositories
             foreach (var hashtag in hashtags)
             {
                 var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date).ToList();
-                foreach (var post in posts)
-                {
-                    var contents = new List<ContentDTO>();
-                    var _hashtags = new List<string>();
-                    foreach (var id in post.ContentsId)
-                    {
-                        string uri = _context.Contents.First(e => e.Id == id).Path;
-                        var content = new ContentDTO {Id = id, Uri = uri};
-                        contents.Add(content);
-                    }
-                
-                    foreach (var id in post.HashtagsId)
-                    {
-                        string name = _context.Hashtags.First(e => e.Id == id).Name;
-                        _hashtags.Add(name);
-                    }
-
-                    var postDTO = new PostDTO
-                    {
-                        Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
-                        Hashtags = _hashtags
-                    };
+                var postDTOs = CreatePostDTOs(posts);
+                foreach (var postDTO in postDTOs)
                     res.Add(postDTO);
-                }
             }
-            return res.ToList();
+            return res.OrderByDescending(e=>e.Date).ToList();
         }
 
         public IEnumerable<PostDTO> GetAll(string searchString)
         {
-            /*string ss = searchString.ToLower();
-            var posts = _context.Posts.Where(p => p.Text.ToLower().Contains(ss) || p.Author.ToLower().Contains(ss))
-                .ToList();
-            return CreatePostDTOs(posts);*/
             string pattern = "%" + searchString + "%";
             return CreatePostDTOs(_context.Posts.Where(p =>
                 EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") || EF.Functions.Like(p.Text.ToLower(), searchString.ToLower())).ToList());
@@ -183,27 +118,7 @@ namespace SbornikBackend.Repositories
         public PostDTO Get(int id)
         {
             var post = _context.Posts.First(e => e.Id == id);
-            var contents = new List<ContentDTO>();
-            var hashtags = new List<string>();
-            foreach (var _id in post.ContentsId)
-            {
-                string uri = _context.Contents.First(e => e.Id == _id).Path;
-                var content = new ContentDTO {Id = _id, Uri = uri};
-                contents.Add(content);
-            }
-                
-            foreach (var _id in post.HashtagsId)
-            {
-                string name = _context.Hashtags.First(e => e.Id == _id).Name;
-                hashtags.Add(name);
-            }
-
-            var postDTO = new PostDTO
-            {
-                Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
-                Hashtags = hashtags
-            };
-            return postDTO;
+            return CreatePostDTO(post);
         }
 
         public PostDTO GetLast(List<int> hashtagsId)
