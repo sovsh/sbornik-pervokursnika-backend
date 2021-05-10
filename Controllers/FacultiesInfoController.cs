@@ -19,11 +19,5 @@ namespace SbornikBackend.Controllers
         {
             return new JsonResult(_all.GetDTO(name));
         }
-        /*[HttpPut]
-        public JsonResult Get(string name)
-        {
-            return new JsonResult(_all.GetDTO(name));
-        }*/
-
     }
 }

@@ -12,14 +12,10 @@ namespace SbornikBackend.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPost _allPosts;
-        private readonly IContent _allContents;
-        private readonly IHashtag _allHashtags;
 
-        public PostsController(IPost posts, IContent contents, IHashtag hashtags)
+        public PostsController(IPost posts)
         {
             _allPosts = posts;
-            _allContents = contents;
-            _allHashtags = hashtags;
         }
 
         [HttpPost]
@@ -27,38 +23,7 @@ namespace SbornikBackend.Controllers
         {
             if (postDTO == null)
                 return BadRequest();
-            var postContents = postDTO.Contents;
-            var listOfContents = new List<int>();
-            foreach (var postContent in postContents)
-            {
-                var content = new Content {Id = postContent.Id, Path = postContent.Uri};
-                _allContents.Add(content);
-                listOfContents.Add(content.Id);
-            }
-
-            var postHashtags = postDTO.Hashtags;
-            var listOfHashtags = new List<int>();
-            foreach (var postHashtag in postHashtags)
-            {
-                var found = _allHashtags.Find(postHashtag);
-                if (found == -1)
-                {
-                    var hashtag = new Hashtag {Name = postHashtag};
-                    _allHashtags.Add(hashtag);
-                    listOfHashtags.Add(hashtag.Id);
-                }
-                else
-                {
-                    var hashtag = _allHashtags.Get(found);
-                    listOfHashtags.Add(hashtag.Id);
-                }
-            }
-
-            var post = new Post
-            {
-                Date = postDTO.Date, Author = postDTO.Author, Text = postDTO.Text, ContentsId = listOfContents,
-                HashtagsId = listOfHashtags
-            };
+            var post = _allPosts.CreatePost(postDTO);
             _allPosts.Add(post);
             return Ok(post);
         }

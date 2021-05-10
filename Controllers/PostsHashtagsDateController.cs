@@ -21,14 +21,7 @@ namespace SbornikBackend.Controllers
         [HttpPut]
         public JsonResult Get(PostHashtagsDateDTO postHashtagsDateDTO)
         {
-            List<int> hashtagsId = new List<int>();
-            foreach (var hashtag in postHashtagsDateDTO.Hashtags)
-            {
-                int id = _allHashtags.Find(hashtag);
-                if (id != -1)
-                    hashtagsId.Add(id);
-            }
-            return new JsonResult(_allPosts.GetAll(hashtagsId,postHashtagsDateDTO.Date).Take(postHashtagsDateDTO.Number));
+            return new JsonResult(_allPosts.GetAll(_allHashtags.GetListOfHashtagsIds(postHashtagsDateDTO.Hashtags),postHashtagsDateDTO.Date).Take(postHashtagsDateDTO.Number));
         }
     }
 }

@@ -57,6 +57,42 @@ namespace SbornikBackend.Repositories
             };
         }
 
+        public Post CreatePost(PostDTO postDTO)
+        {
+            var postContents = postDTO.Contents;
+            var listOfContents = new List<int>();
+            foreach (var postContent in postContents)
+            {
+                var content = new Content {Id = postContent.Id, Path = postContent.Uri};
+                _context.Contents.Add(content);
+                listOfContents.Add(content.Id);
+            }
+
+            var postHashtags = postDTO.Hashtags;
+            var listOfHashtags = new List<int>();
+            foreach (var postHashtag in postHashtags)
+            {
+                var found = FindHashtag(postHashtag);
+                if (found == -1)
+                {
+                    var hashtag = new Hashtag {Name = postHashtag};
+                    _context.Hashtags.Add(hashtag);
+                    listOfHashtags.Add(hashtag.Id);
+                }
+                else
+                {
+                    var hashtag = _context.Hashtags.First(h => h.Id == found);
+                    listOfHashtags.Add(hashtag.Id);
+                }
+            }
+
+            return new Post
+            {
+                Date = postDTO.Date, Author = postDTO.Author, Text = postDTO.Text, ContentsId = listOfContents,
+                HashtagsId = listOfHashtags
+            };
+        }
+
         public List<PostDTO> CreatePostDTOs(List<Post> posts)
         {
             var result = new List<PostDTO>();
@@ -156,6 +192,13 @@ namespace SbornikBackend.Repositories
             }
             _context.Posts.Remove(post);
             _context.SaveChanges();
+        }
+        public int FindHashtag(string name)
+        {
+            var found = _context.Hashtags.FirstOrDefault(e => e.Name == name);
+            if (found == null)
+                return -1;
+            return found.Id;
         }
     }
 }

@@ -33,6 +33,19 @@ namespace SbornikBackend.Repositories
 
         public Hashtag Get(int id) => _context.Hashtags.First(h => h.Id == id);
         
+        public List<int> GetListOfHashtagsIds(List<string> hashtags)
+        {
+            List<int> hashtagsIds = new List<int>();
+            foreach (var hashtag in hashtags)
+            {
+                int id = Find(hashtag);
+                if (id != -1)
+                    hashtagsIds.Add(id);
+            }
+
+            return hashtagsIds;
+        }
+
         public void Update(Hashtag hashtag)
         {
             var dbHashtag = _context.Hashtags.First(e => e.Id == hashtag.Id);

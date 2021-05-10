@@ -9,6 +9,7 @@ namespace SbornikBackend.Interfaces
     {
         bool IsTableHasId(int id);
         PostDTO CreatePostDTO(Post post);
+        Post CreatePost(PostDTO postDTO);
         List<PostDTO> CreatePostDTOs(List<Post> posts);
         void Add(Post post);
         IEnumerable<PostDTO> GetAll();
@@ -19,5 +20,6 @@ namespace SbornikBackend.Interfaces
         PostDTO GetLast(List<int> hashtagsId);
         void Update(Post post);
         void Delete(int id);
+        public int FindHashtag(string name);
     }
 }

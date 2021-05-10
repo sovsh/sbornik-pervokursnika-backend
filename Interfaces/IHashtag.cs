@@ -11,8 +11,9 @@ namespace SbornikBackend.Interfaces
         void Add(Hashtag hashtag);
         IEnumerable<Hashtag> GetAll();
         Hashtag Get(int id);
+        List<int> GetListOfHashtagsIds(List<string> hashtags);
         void Update(Hashtag hashtag);
         void Delete(int id);
-        int Find(string name);
+        public int Find(string name);
     }
 }
