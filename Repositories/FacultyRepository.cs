@@ -44,7 +44,7 @@ namespace SbornikBackend.Repositories
 
             }
 
-            return new FacultyDTO {Name = name, Info = faculty.Info, Contacts = contacts};
+            return new FacultyDTO {Name = name, Info = faculty.Info, Picture = faculty.Picture, Contacts = contacts};
         }
 
         public void Update(Faculty faculty)
@@ -52,6 +52,7 @@ namespace SbornikBackend.Repositories
             var dbFaculty = _context.Faculties.First(e => e.Id == faculty.Id);
             dbFaculty.Name = faculty.Name;
             dbFaculty.Info = faculty.Info;
+            dbFaculty.Picture = faculty.Picture;
             _context.SaveChanges();
         }
 
