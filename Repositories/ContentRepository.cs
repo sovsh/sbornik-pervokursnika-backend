@@ -28,7 +28,9 @@ namespace SbornikBackend.Repositories
 
         public void Update(Content content)
         {
-            _context.Contents.Update(content);
+            var dbContent = _context.Contents.First(e => e.Id == content.Id);
+            dbContent.Type = content.Type;
+            dbContent.Path = content.Path;
             _context.SaveChanges();
         }
 

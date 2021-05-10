@@ -49,7 +49,9 @@ namespace SbornikBackend.Repositories
 
         public void Update(Faculty faculty)
         {
-            _context.Faculties.Update(faculty);
+            var dbFaculty = _context.Faculties.First(e => e.Id == faculty.Id);
+            dbFaculty.Name = faculty.Name;
+            dbFaculty.Info = faculty.Info;
             _context.SaveChanges();
         }
 

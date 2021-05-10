@@ -55,7 +55,15 @@ namespace SbornikBackend.Repositories
 
         public void Update(GuideSection guideSection)
         {
-            _context.Guide.Update(guideSection);
+            var dbGuideSection = _context.Guide.First(e => e.Id == guideSection.Id);
+            dbGuideSection.IsMain = guideSection.IsMain;
+            dbGuideSection.Title = guideSection.Title;
+            dbGuideSection.Text = guideSection.Text;
+            dbGuideSection.Picture = guideSection.Picture;
+            dbGuideSection.ParentId = guideSection.ParentId;
+            dbGuideSection.Pictures.Clear();
+            foreach (var picture in guideSection.Pictures)
+                dbGuideSection.Pictures.Add(picture);
             _context.SaveChanges();
         }
 

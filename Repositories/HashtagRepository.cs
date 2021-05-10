@@ -35,7 +35,8 @@ namespace SbornikBackend.Repositories
         
         public void Update(Hashtag hashtag)
         {
-            _context.Hashtags.Update(hashtag);
+            var dbHashtag = _context.Hashtags.First(e => e.Id == hashtag.Id);
+            dbHashtag.Name = hashtag.Name;
             _context.SaveChanges();
         }
 

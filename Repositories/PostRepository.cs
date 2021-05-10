@@ -130,14 +130,19 @@ namespace SbornikBackend.Repositories
         {
             var elems = _context.HashtagsToPostsRelation.Where(e => e.PostId == post.Id);
             foreach (var elem in elems)
-            {
                 _context.HashtagsToPostsRelation.Remove(elem);
-            }
-            _context.Posts.Update(post);
             foreach (var hashtag in post.HashtagsId)
-            {
                 _context.HashtagsToPostsRelation.Add(new HashtagToPostRelation {HashtagId = hashtag, PostId = post.Id});
-            }
+            var dbPost = _context.Posts.First(e => e.Id == post.Id);
+            dbPost.Date = post.Date;
+            dbPost.Author = post.Author;
+            dbPost.Text = post.Text;
+            dbPost.ContentsId.Clear();
+            foreach (var contentId in post.ContentsId)
+                dbPost.ContentsId.Add(contentId);
+            dbPost.HashtagsId.Clear();
+            foreach (var hashtagId in post.HashtagsId)
+                dbPost.HashtagsId.Add(hashtagId);
             _context.SaveChanges();
         }
 

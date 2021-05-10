@@ -28,7 +28,16 @@ namespace SbornikBackend.Repositories
 
         public void Update(User user)
         {
-            _context.Users.Update(user);
+            var dbUser = _context.Users.First(e => e.Id == user.Id);
+            dbUser.Login = user.Login;
+            dbUser.Password = user.Password;
+            dbUser.UserFacultyId = user.UserFacultyId;
+            dbUser.HashtagsId.Clear();
+            foreach (var hashtagId in user.HashtagsId)
+                dbUser.HashtagsId.Add(hashtagId);
+            dbUser.FavoritePostsId.Clear();
+            foreach (var favoritePostId in user.FavoritePostsId)
+                dbUser.FavoritePostsId.Add(favoritePostId);
             _context.SaveChanges();
         }
 
