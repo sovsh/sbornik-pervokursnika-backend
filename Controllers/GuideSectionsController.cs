@@ -51,7 +51,7 @@ namespace SbornikBackend.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (id == 0)
+            if (id == 9)
                 return BadRequest("This section cannot be deleted");
             if (!_allGuideSections.IsTableHasId(id))
                 return BadRequest();

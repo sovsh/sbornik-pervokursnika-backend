@@ -74,7 +74,7 @@ namespace SbornikBackend.Repositories
             {
                 var articles = _context.Guide.Where(e => e.ParentId == id);
                 foreach (var article in articles)
-                    article.ParentId = 0;
+                    article.ParentId = 9;
             }
             _context.Guide.Remove(section);
             _context.SaveChanges();
