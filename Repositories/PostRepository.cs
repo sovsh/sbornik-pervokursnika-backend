@@ -22,6 +22,7 @@ namespace SbornikBackend.Repositories
             return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Id);
         }
     }
+
     public class PostRepository : IPost
     {
         private readonly ApplicationContext _context;
@@ -110,6 +111,7 @@ namespace SbornikBackend.Repositories
             {
                 _context.HashtagsToPostsRelation.Add(new HashtagToPostRelation {HashtagId = hashtag, PostId = post.Id});
             }
+
             _context.SaveChanges();
         }
 
@@ -118,17 +120,20 @@ namespace SbornikBackend.Repositories
             var posts = _context.Posts.ToList();
             return CreatePostDTOs(posts);
         }
+
         public IEnumerable<PostDTO> GetAll(List<int> hashtags)
         {
             var res = new HashSet<PostDTO>(new PostsComparer());
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).ToList();
+                var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
+                    .ToList();
                 var postDTOs = CreatePostDTOs(posts);
                 foreach (var postDTO in postDTOs)
                     res.Add(postDTO);
             }
-            return res.OrderByDescending(e=>e.Date).ToList();
+
+            return res.OrderByDescending(e => e.Date).ToList();
         }
 
         public IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date)
@@ -136,18 +141,28 @@ namespace SbornikBackend.Repositories
             var res = new HashSet<PostDTO>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.OrderByDescending(e=>e.Date).Where(e => e.HashtagsId.Contains(hashtag)).Where(e => e.Date < date).ToList();
+                var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
+                    .Where(e => e.Date < date).ToList();
                 var postDTOs = CreatePostDTOs(posts);
                 foreach (var postDTO in postDTOs)
                     res.Add(postDTO);
             }
-            return res.OrderByDescending(e=>e.Date).ToList();
+
+            return res.OrderByDescending(e => e.Date).ToList();
         }
 
         public IEnumerable<PostDTO> GetAll(string searchString)
         {
-            return CreatePostDTOs(_context.Posts.Where(p =>
-                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") || EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
+            return CreatePostDTOs(_context.Posts.OrderByDescending(p => p.Date).Where(p =>
+                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") ||
+                EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
+        }
+
+        public IEnumerable<PostDTO> GetAll(string searchString, DateTime date)
+        {
+            return CreatePostDTOs(_context.Posts.OrderByDescending(p => p.Date).Where(p => p.Date < date).Where(p =>
+                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") ||
+                EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
         }
 
         public PostDTO Get(int id)
@@ -189,9 +204,11 @@ namespace SbornikBackend.Repositories
             {
                 _context.HashtagsToPostsRelation.Remove(elem);
             }
+
             _context.Posts.Remove(post);
             _context.SaveChanges();
         }
+
         public int FindHashtag(string name)
         {
             var found = _context.Hashtags.FirstOrDefault(e => e.Name == name);

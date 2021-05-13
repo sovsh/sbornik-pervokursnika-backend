@@ -16,6 +16,7 @@ namespace SbornikBackend.Interfaces
         IEnumerable<PostDTO> GetAll(List<int> hashtags);
         IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date);
         IEnumerable<PostDTO> GetAll(string searchString);
+        IEnumerable<PostDTO> GetAll(string searchString, DateTime date);
         PostDTO Get(int id);
         PostDTO GetLast(List<int> hashtagsId);
         void Update(Post post);
