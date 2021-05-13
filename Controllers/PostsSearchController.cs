@@ -14,7 +14,7 @@ namespace SbornikBackend.Controllers
         {
             _allPosts = posts;
         }
-       [HttpPost]
+       [HttpGet("{searchString}")]
         public JsonResult Search(string searchString)
         {
             if (searchString == null)

@@ -146,9 +146,8 @@ namespace SbornikBackend.Repositories
 
         public IEnumerable<PostDTO> GetAll(string searchString)
         {
-            string pattern = "%" + searchString + "%";
             return CreatePostDTOs(_context.Posts.Where(p =>
-                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") || EF.Functions.Like(p.Text.ToLower(), searchString.ToLower())).ToList());
+                EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") || EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
         }
 
         public PostDTO Get(int id)
