@@ -6,9 +6,11 @@ namespace SbornikBackend.Interfaces
     public interface IFaculty
     {
         bool IsTableHasId(int id);
+        FacultyDTO CreateFacultyDTO(Faculty faculty);
         void Add(Faculty faculty);
         IEnumerable<Faculty> GetAll();
         Faculty Get(int id);
+        FacultyDTO GetDTO(int id);
         FacultyDTO GetDTO(string name);
         void Update(Faculty faculty);
         void Delete(int id);

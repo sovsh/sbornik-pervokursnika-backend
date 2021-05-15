@@ -17,19 +17,8 @@ namespace SbornikBackend.Repositories
 
         public bool IsTableHasId(int id) => _context.Faculties.Any(f => f.Id == id);
 
-        public void Add(Faculty faculty)
+        public FacultyDTO CreateFacultyDTO(Faculty faculty)
         {
-            _context.Faculties.Add(faculty);
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e=>e.Id).ToList();
-
-        public Faculty Get(int id) => _context.Faculties.First(f => f.Id == id);
-
-        public FacultyDTO GetDTO(string name)
-        {
-            var faculty = _context.Faculties.First(f => f.Name.Equals(name));
             List<ContactDTO> contacts = new List<ContactDTO>();
             foreach (var contact in _context.Contacts.Where(c => c.FacultyId == faculty.Id))
             {
@@ -38,13 +27,41 @@ namespace SbornikBackend.Repositories
                     links.Add(link);
                 contacts.Add(new ContactDTO
                 {
-                    Name = contact.Name, Position = contact.Position, Links = links, PhoneNumber = contact.PhoneNumber,
+                    Id = contact.Id, Name = contact.Name, Position = contact.Position, Links = links,
+                    PhoneNumber = contact.PhoneNumber,
                     Photo = contact.Photo
                 });
 
             }
 
-            return new FacultyDTO {Name = name, Info = faculty.Info, Picture = faculty.Picture, Contacts = contacts};
+            return new FacultyDTO
+            {
+                Id = faculty.Id, Name = faculty.Name, Info = faculty.Info, Picture = faculty.Picture,
+                Contacts = contacts
+            };
+
+        }
+
+        public void Add(Faculty faculty)
+        {
+            _context.Faculties.Add(faculty);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
+
+        public Faculty Get(int id) => _context.Faculties.First(f => f.Id == id);
+
+        public FacultyDTO GetDTO(int id)
+        {
+            var faculty = _context.Faculties.First(f => f.Id == id);
+            return CreateFacultyDTO(faculty);
+        }
+
+        public FacultyDTO GetDTO(string name)
+        {
+            var faculty = _context.Faculties.First(f => f.Name.Equals(name));
+            return CreateFacultyDTO(faculty);
         }
 
         public void Update(Faculty faculty)
