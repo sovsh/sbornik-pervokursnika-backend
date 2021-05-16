@@ -64,8 +64,9 @@ namespace SbornikBackend.Repositories
             var listOfContents = new List<int>();
             foreach (var postContent in postContents)
             {
-                var content = new Content {Id = postContent.Id, Path = postContent.Uri};
+                var content = new Content {Path = postContent.Uri};
                 _context.Contents.Add(content);
+                _context.SaveChanges();
                 listOfContents.Add(content.Id);
             }
 
@@ -78,6 +79,7 @@ namespace SbornikBackend.Repositories
                 {
                     var hashtag = new Hashtag {Name = postHashtag};
                     _context.Hashtags.Add(hashtag);
+                    _context.SaveChanges();
                     listOfHashtags.Add(hashtag.Id);
                 }
                 else
