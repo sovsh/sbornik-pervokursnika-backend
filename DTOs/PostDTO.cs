@@ -16,5 +16,16 @@ namespace SbornikBackend.DTOs
         public string Text { get; set; }
         public List<ContentDTO> Contents { get; set; } = new List<ContentDTO>();
         public List<string> Hashtags { get; set; } = new List<string>();
+        private bool Equals(PostDTO other)
+        {
+
+            return this.Id == other.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            //return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Id);
+            return Id.GetHashCode();
+        }
     }
 }

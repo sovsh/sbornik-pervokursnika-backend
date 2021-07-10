@@ -10,6 +10,7 @@ namespace SbornikBackend.Interfaces
         bool IsTableHasId(int id);
         PostDTO CreatePostDTO(Post post);
         Post CreatePost(PostDTO postDTO);
+        List<PostDTO> CreatePostDTOs(List<int> ids);
         List<PostDTO> CreatePostDTOs(List<Post> posts);
         void Add(Post post);
         IEnumerable<PostDTO> GetAll();

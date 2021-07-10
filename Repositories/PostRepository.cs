@@ -8,20 +8,6 @@ using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Repositories
 {
-    public class PostsComparer : IEqualityComparer<PostDTO>
-    {
-        public bool Equals(PostDTO? x, PostDTO? y)
-        {
-            if (x == null || y == null)
-                return false;
-            return x.Id == y.Id;
-        }
-
-        public int GetHashCode(PostDTO obj)
-        {
-            return StringComparer.InvariantCultureIgnoreCase.GetHashCode(obj.Id);
-        }
-    }
 
     public class PostRepository : IPost
     {
@@ -96,6 +82,11 @@ namespace SbornikBackend.Repositories
             };
         }
 
+        public List<PostDTO> CreatePostDTOs(List<int> ids)
+        {
+            return ids.Select(Get).OrderByDescending(e => e.Date).ToList();
+        }
+
         public List<PostDTO> CreatePostDTOs(List<Post> posts)
         {
             var result = new List<PostDTO>();
@@ -125,32 +116,33 @@ namespace SbornikBackend.Repositories
 
         public IEnumerable<PostDTO> GetAll(List<int> hashtags)
         {
-            var res = new HashSet<PostDTO>(new PostsComparer());
+            var res = new HashSet<int>();
             foreach (var hashtag in hashtags)
             {
                 var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
-                    .ToList();
-                var postDTOs = CreatePostDTOs(posts);
-                foreach (var postDTO in postDTOs)
-                    res.Add(postDTO);
+                    .Select(e => e.Id
+                    ).ToList();
+                foreach (var id in posts)
+                    res.Add(id);
             }
 
-            return res.OrderByDescending(e => e.Date).ToList();
+            return CreatePostDTOs(res.ToList());
         }
 
         public IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date)
         {
-            var res = new HashSet<PostDTO>();
+            var res = new HashSet<int>();
             foreach (var hashtag in hashtags)
             {
                 var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
-                    .Where(e => e.Date < date).ToList();
-                var postDTOs = CreatePostDTOs(posts);
-                foreach (var postDTO in postDTOs)
-                    res.Add(postDTO);
+                    .Where(e => e.Date < date).Select(e => e.Id
+                    ).ToList();
+                foreach (var id in posts)
+                    res.Add(id);
             }
 
-            return res.OrderByDescending(e => e.Date).ToList();
+            return CreatePostDTOs(res.ToList());
+
         }
 
         public IEnumerable<PostDTO> GetAll(string searchString)
