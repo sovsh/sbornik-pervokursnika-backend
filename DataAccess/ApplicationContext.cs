@@ -12,15 +12,16 @@ namespace SbornikBackend.DataAccess
         public DbSet<Post>Posts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<HashtagToPostRelation>HashtagsToPostsRelation { get; set; }
+        public DbSet<FacultyTypeToLeadershipRelation>FacultiesTypesToLeadershipsRelation { get; set; }
         public ApplicationContext():base()
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
         public ApplicationContext(DbContextOptions<ApplicationContext>options):base(options)
         {
             //Database.EnsureDeleted();
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
     }
 }

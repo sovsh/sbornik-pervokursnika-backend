@@ -3,11 +3,16 @@
     /// <summary>
     /// Тип контента
     /// </summary>
+    // 0 - картинка
+    // 1 - гифка
+    // 2 - файл (.doc, .pdf etc)
+    // 3 - ссылка
     public enum ContentType : int
     {
         Picture,
         Gif,
-        File
+        File,
+        Link
     }
     /// <summary>
     /// Контент
