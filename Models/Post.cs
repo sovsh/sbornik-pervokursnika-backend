@@ -17,5 +17,6 @@ namespace SbornikBackend
         public List<int> HashtagsId { get; set; } = new List<int>();
         public bool IsShared { get; set; }
         public string Comment { get; set; }
+        public int OriginalPostId { get; set; }
     }
 }

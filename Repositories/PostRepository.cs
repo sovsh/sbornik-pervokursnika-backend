@@ -39,8 +39,8 @@ namespace SbornikBackend.Repositories
 
             return new PostDTO
             {
-                Id = post.Id, Date = post.Date, Author = post.Author, Text = post.Text, Contents = contents,
-                Hashtags = hashtags
+                Id = post.Id, Date = post.Date, Author = post.Author,AuthorPicture = post.AuthorPicture, Text = post.Text, Contents = contents,
+                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPostId = post.OriginalPostId
             };
         }
 
@@ -77,8 +77,8 @@ namespace SbornikBackend.Repositories
 
             return new Post
             {
-                Date = postDTO.Date, Author = postDTO.Author, Text = postDTO.Text, ContentsId = listOfContents,
-                HashtagsId = listOfHashtags
+                Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
+                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPostId
             };
         }
 
@@ -180,6 +180,7 @@ namespace SbornikBackend.Repositories
             var dbPost = _context.Posts.First(e => e.Id == post.Id);
             dbPost.Date = post.Date;
             dbPost.Author = post.Author;
+            dbPost.AuthorPicture = post.AuthorPicture;
             dbPost.Text = post.Text;
             dbPost.ContentsId.Clear();
             foreach (var contentId in post.ContentsId)
@@ -187,6 +188,9 @@ namespace SbornikBackend.Repositories
             dbPost.HashtagsId.Clear();
             foreach (var hashtagId in post.HashtagsId)
                 dbPost.HashtagsId.Add(hashtagId);
+            dbPost.IsShared = post.IsShared;
+            dbPost.Comment = post.Comment;
+            dbPost.OriginalPostId = post.OriginalPostId;
             _context.SaveChanges();
         }
 
