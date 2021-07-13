@@ -6,10 +6,11 @@ namespace SbornikBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LastPostController:ControllerBase
+    public class LastPostController : ControllerBase
     {
         private readonly IPost _allPosts;
         private readonly IHashtag _allHashtags;
+
         public LastPostController(IPost posts, IHashtag hashtags)
         {
             _allPosts = posts;
@@ -17,8 +18,10 @@ namespace SbornikBackend.Controllers
         }
 
         [HttpPut]
-        public JsonResult Get(List<string>hashtags)
+        public JsonResult Get(List<string> hashtags)
         {
+            if (hashtags.Count == 0)
+                return new JsonResult(_allPosts.GetLast());
             return new JsonResult(_allPosts.GetLast(_allHashtags.GetListOfHashtagsIds(hashtags)));
         }
     }

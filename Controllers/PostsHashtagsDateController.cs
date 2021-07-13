@@ -13,15 +13,21 @@ namespace SbornikBackend.Controllers
     {
         private readonly IPost _allPosts;
         private readonly IHashtag _allHashtags;
-        public PostsHashtagsDateController(IPost posts,  IHashtag hashtags)
+
+        public PostsHashtagsDateController(IPost posts, IHashtag hashtags)
         {
             _allPosts = posts;
             _allHashtags = hashtags;
         }
+
         [HttpPut]
         public JsonResult Get(PostHashtagsDateDTO postHashtagsDateDTO)
         {
-            return new JsonResult(_allPosts.GetAll(_allHashtags.GetListOfHashtagsIds(postHashtagsDateDTO.Hashtags),postHashtagsDateDTO.Date).Take(postHashtagsDateDTO.Number));
+            if (postHashtagsDateDTO.Hashtags.Count == 0)
+                return new JsonResult(_allPosts.GetAll(postHashtagsDateDTO.Date).Take(postHashtagsDateDTO.Number));
+            return new JsonResult(_allPosts
+                .GetAll(_allHashtags.GetListOfHashtagsIds(postHashtagsDateDTO.Hashtags), postHashtagsDateDTO.Date)
+                .Take(postHashtagsDateDTO.Number));
         }
     }
 }

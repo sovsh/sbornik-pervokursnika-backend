@@ -110,7 +110,7 @@ namespace SbornikBackend.Repositories
 
         public IEnumerable<PostDTO> GetAll()
         {
-            var posts = _context.Posts.ToList();
+            var posts = _context.Posts.OrderByDescending(e => e.Date).ToList();
             return CreatePostDTOs(posts);
         }
 
@@ -124,7 +124,18 @@ namespace SbornikBackend.Repositories
                     ).ToList();
                 foreach (var id in posts)
                     res.Add(id);
-            }
+            } 
+            return CreatePostDTOs(res.ToList());
+        }
+
+        public IEnumerable<PostDTO> GetAll(DateTime date)
+        {
+            var res = new HashSet<int>();
+            var posts = _context.Posts.OrderByDescending(e => e.Date)
+                .Where(e => e.Date < date).Select(e => e.Id
+                ).ToList();
+            foreach (var id in posts)
+                res.Add(id);
 
             return CreatePostDTOs(res.ToList());
         }
@@ -163,6 +174,11 @@ namespace SbornikBackend.Repositories
         {
             var post = _context.Posts.First(e => e.Id == id);
             return CreatePostDTO(post);
+        }
+
+        public PostDTO GetLast()
+        {
+            return GetAll().First();
         }
 
         public PostDTO GetLast(List<int> hashtagsId)
