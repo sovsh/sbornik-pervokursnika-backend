@@ -108,9 +108,14 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
+        public IEnumerable<Post> SimpleGetAll()
+        {
+            return _context.Posts.ToList();
+        }
+
         public IEnumerable<PostDTO> GetAll()
         {
-            var posts = _context.Posts.OrderByDescending(e => e.Date).ToList();
+            var posts = _context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date).ToList();
             return CreatePostDTOs(posts);
         }
 
@@ -119,7 +124,7 @@ namespace SbornikBackend.Repositories
             var res = new HashSet<int>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
+                var posts = _context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
                     .Select(e => e.Id
                     ).ToList();
                 foreach (var id in posts)
@@ -131,7 +136,7 @@ namespace SbornikBackend.Repositories
         public IEnumerable<PostDTO> GetAll(DateTime date)
         {
             var res = new HashSet<int>();
-            var posts = _context.Posts.OrderByDescending(e => e.Date)
+            var posts = _context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date)
                 .Where(e => e.Date < date).Select(e => e.Id
                 ).ToList();
             foreach (var id in posts)
@@ -145,7 +150,7 @@ namespace SbornikBackend.Repositories
             var res = new HashSet<int>();
             foreach (var hashtag in hashtags)
             {
-                var posts = _context.Posts.OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
+                var posts = _context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
                     .Where(e => e.Date < date).Select(e => e.Id
                     ).ToList();
                 foreach (var id in posts)
@@ -158,16 +163,21 @@ namespace SbornikBackend.Repositories
 
         public IEnumerable<PostDTO> GetAll(string searchString)
         {
-            return CreatePostDTOs(_context.Posts.OrderByDescending(p => p.Date).Where(p =>
+            return CreatePostDTOs(_context.Posts.Where(e => e.IsShared == false).OrderByDescending(p => p.Date).Where(p =>
                 EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") ||
                 EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
         }
 
         public IEnumerable<PostDTO> GetAll(string searchString, DateTime date)
         {
-            return CreatePostDTOs(_context.Posts.OrderByDescending(p => p.Date).Where(p => p.Date < date).Where(p =>
+            return CreatePostDTOs(_context.Posts.Where(e => e.IsShared == false).OrderByDescending(p => p.Date).Where(p => p.Date < date).Where(p =>
                 EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") ||
                 EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
+        }
+
+        public Post SimpleGet(int id)
+        {
+            return _context.Posts.First(e => e.Id == id);
         }
 
         public PostDTO Get(int id)
