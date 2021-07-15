@@ -34,9 +34,11 @@ namespace SbornikBackend.Repositories
 
             }
 
+            string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
+            
             return new FacultyDTO
             {
-                Id = faculty.Id, Name = faculty.Name, Info = faculty.Info, Picture = faculty.Picture,
+                Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = faculty.Type, Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture,
                 Contacts = contacts
             };
 
@@ -68,6 +70,8 @@ namespace SbornikBackend.Repositories
         {
             var dbFaculty = _context.Faculties.First(e => e.Id == faculty.Id);
             dbFaculty.Name = faculty.Name;
+            dbFaculty.Abbreviation = faculty.Abbreviation;
+            dbFaculty.Type = faculty.Type;
             dbFaculty.Info = faculty.Info;
             dbFaculty.Picture = faculty.Picture;
             _context.SaveChanges();

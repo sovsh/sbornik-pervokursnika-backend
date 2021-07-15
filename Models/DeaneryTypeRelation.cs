@@ -1,9 +1,9 @@
 ﻿namespace SbornikBackend
 {
-    public class FacultyTypeToLeadershipRelation
+    public class DeaneryTypeRelation
     {
         public int Id { get; set; }
         public DivisionType Type { get; set; }
-        public string LeadershipName { get; set; }
+        public string DeaneryName { get; set; }
     }
 }
