@@ -31,13 +31,13 @@ namespace SbornikBackend.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            return new JsonResult(_allPosts.SimpleGetAll());
+            return new JsonResult(_allPosts.GetAll());
         }
 
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            return new JsonResult(_allPosts.SimpleGet(id));
+            return new JsonResult(_allPosts.Get(id));
         }
 
         [HttpPut]

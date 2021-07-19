@@ -37,10 +37,16 @@ namespace SbornikBackend.Repositories
                 hashtags.Add(name);
             }
 
+            PostDTO originalPost;
+            if (post.OriginalPostId == -1)
+                originalPost = null;
+            else
+                originalPost = Get(post.OriginalPostId);
+
             return new PostDTO
             {
                 Id = post.Id, Date = post.Date, Author = post.Author,AuthorPicture = post.AuthorPicture, Text = post.Text, Contents = contents,
-                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPostId = post.OriginalPostId
+                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPost =originalPost
             };
         }
 
@@ -78,7 +84,7 @@ namespace SbornikBackend.Repositories
             return new Post
             {
                 Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
-                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPostId
+                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPost.Id
             };
         }
 
