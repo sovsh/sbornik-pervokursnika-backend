@@ -22,20 +22,22 @@ namespace SbornikBackend.Repositories
 
         public PostDTO CreatePostDTO(Post post)
         {
-            var contents = new List<ContentDTO>();
+            //var contents = new List<ContentDTO>();
             var hashtags = new List<string>();
-            foreach (var id in post.ContentsId)
+            /*foreach (var id in post.ContentsId)
             {
                 string uri = _context.Contents.First(e => e.Id == id).Path;
                 var content = new ContentDTO {Id = id, Uri = uri};
                 contents.Add(content);
-            }
+            }*/
 
             foreach (var id in post.HashtagsId)
             {
                 string name = _context.Hashtags.First(e => e.Id == id).Name;
                 hashtags.Add(name);
             }
+
+            List<ContentDTO> contents = new ContentRepository(_context).CreateContentDTOs(post.ContentsId);
 
             PostDTO originalPost;
             if (post.OriginalPostId == -1)

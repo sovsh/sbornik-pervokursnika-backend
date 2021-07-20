@@ -16,6 +16,17 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasId(int id) => _context.Faculties.Any(f => f.Id == id);
+        public string GetType(int type)
+        {
+            return type switch
+            {
+                0 => "Fallback",
+                1 => "Faculty",
+                2 => "Academy",
+                3 => "Institute",
+                _ => "Error"
+            };
+        }
 
         public FacultyDTO CreateFacultyDTO(Faculty faculty)
         {
@@ -34,11 +45,12 @@ namespace SbornikBackend.Repositories
 
             }
 
+            string type = GetType((int)faculty.Type);
             string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
             
             return new FacultyDTO
             {
-                Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = faculty.Type, Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture,
+                Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = type, Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture,
                 Contacts = contacts
             };
 

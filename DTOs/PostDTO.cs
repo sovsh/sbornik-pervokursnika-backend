@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace SbornikBackend.DTOs
 {
-    public struct ContentDTO
+    /*public struct ContentDTO
     {
         public int Id { get; set; }
         public string Uri { get; set; }
-    }
+    }*/
     public class PostDTO
     {
         public int Id { get; set; }
