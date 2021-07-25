@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
@@ -18,6 +19,7 @@ namespace SbornikBackend.Controllers
             _allPosts = posts;
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPost]
         public IActionResult Post(PostDTO postDTO)
         {
@@ -40,6 +42,7 @@ namespace SbornikBackend.Controllers
             return new JsonResult(_allPosts.Get(id));
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPut]
         public IActionResult Put(Post post)
         {
@@ -51,6 +54,7 @@ namespace SbornikBackend.Controllers
             return Ok(post);
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

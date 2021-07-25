@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -8,11 +9,13 @@ namespace SbornikBackend.Controllers
     public class HashtagsController : ControllerBase
     {
         private readonly IHashtag _all;
+
         public HashtagsController(IHashtag hashtags)
         {
             _all = hashtags;
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPost]
         public IActionResult Post(Hashtag hashtag)
         {
@@ -29,27 +32,30 @@ namespace SbornikBackend.Controllers
         {
             return new JsonResult(_all.GetAll());
         }
+
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
             return new JsonResult(_all.Get(id));
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPut]
         public IActionResult Put(Hashtag hashtag)
         {
-            if (hashtag == null) 
+            if (hashtag == null)
                 return BadRequest();
-            if (!_all.IsTableHasId(hashtag.Id)) 
+            if (!_all.IsTableHasId(hashtag.Id))
                 return BadRequest();
             _all.Update(hashtag);
             return Ok(hashtag);
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (!_all.IsTableHasId(id)) 
+            if (!_all.IsTableHasId(id))
                 return BadRequest();
             _all.Delete(id);
             return Ok(id);

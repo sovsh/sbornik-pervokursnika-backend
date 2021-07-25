@@ -10,7 +10,9 @@ namespace SbornikBackend.DataAccess
         public DbSet<GuideSection> Guide { get; set; }
         public DbSet<Hashtag>Hashtags { get; set; }
         public DbSet<Post>Posts { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserBot> UsersBot { get; set; }
+        public DbSet<UserDesktop> UsersDesktop { get; set; }
+
         public DbSet<HashtagToPostRelation>HashtagsToPostsRelation { get; set; }
         public DbSet<DeaneryTypeRelation>DeaneryTypesRelation { get; set; }
         public ApplicationContext():base()

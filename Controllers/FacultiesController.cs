@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -12,6 +13,8 @@ namespace SbornikBackend.Controllers
         {
             _all = faculties;
         }
+        
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Post(Faculty faculty)
         {
@@ -33,6 +36,7 @@ namespace SbornikBackend.Controllers
             return new JsonResult(_all.Get(id));
         }
         
+        [Authorize(Roles = "User")]
         [HttpPut]
         public IActionResult Put(Faculty faculty)
         {
@@ -44,6 +48,7 @@ namespace SbornikBackend.Controllers
             return Ok(faculty);
         }
 
+        [Authorize(Roles = "User")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

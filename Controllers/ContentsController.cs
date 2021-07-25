@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -14,6 +15,7 @@ namespace SbornikBackend.Controllers
             _all = contents;
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPost]
         public IActionResult Post(Content content)
         {
@@ -37,6 +39,7 @@ namespace SbornikBackend.Controllers
             return new JsonResult(_all.Get(id));
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPut]
         public IActionResult Put(Content content)
         {
@@ -48,6 +51,7 @@ namespace SbornikBackend.Controllers
             return Ok(content);
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

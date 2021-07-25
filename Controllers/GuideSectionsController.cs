@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -14,6 +15,7 @@ namespace SbornikBackend.Controllers
             _allGuideSections = guideSections;
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public IActionResult Post(GuideSection guideSection)
         {
@@ -37,6 +39,7 @@ namespace SbornikBackend.Controllers
             return new JsonResult(_allGuideSections.Get(id));
         }
 
+        [Authorize(Roles = "User")]
         [HttpPut]
         public IActionResult Put(GuideSection guideSection)
         {
@@ -48,6 +51,7 @@ namespace SbornikBackend.Controllers
             return Ok(guideSection);
         }
 
+        [Authorize(Roles = "User")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
