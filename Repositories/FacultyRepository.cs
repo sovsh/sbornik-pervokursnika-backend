@@ -56,6 +56,21 @@ namespace SbornikBackend.Repositories
 
         }
 
+        public FacultySomeInfoDTO CreateFacultySomeInfoDTO(Faculty faculty)
+        {
+            return new FacultySomeInfoDTO
+            {
+                Id = faculty.Id,
+                Name = faculty.Name,
+                Abbreviation = faculty.Abbreviation
+            };
+        }
+
+        public IEnumerable<FacultySomeInfoDTO> CreateFacultySomeInfoDTOs(List<Faculty> faculties)
+        {
+            return faculties.Select(CreateFacultySomeInfoDTO).ToList();
+        }
+
         public void Add(Faculty faculty)
         {
             _context.Faculties.Add(faculty);
@@ -63,6 +78,10 @@ namespace SbornikBackend.Repositories
         }
 
         public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
+        public IEnumerable<FacultySomeInfoDTO> GetAllSomeInfoDTOs()
+        {
+            return CreateFacultySomeInfoDTOs(GetAll().ToList());
+        }
 
         public Faculty Get(int id) => _context.Faculties.First(f => f.Id == id);
 
