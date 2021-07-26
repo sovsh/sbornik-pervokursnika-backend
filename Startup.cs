@@ -11,6 +11,7 @@ using SbornikBackend.Authentication;
 using SbornikBackend.DataAccess;
 using SbornikBackend.Interfaces;
 using SbornikBackend.Repositories;
+using SbornikBackend.Services;
 
 namespace SbornikBackend
 {
@@ -45,6 +46,8 @@ namespace SbornikBackend
             services.AddScoped<IGuideSection, GuideSectionRepository>();
             services.AddScoped<IUserBot, UserBotRepository>();
             services.AddScoped<IUserDesktop, UserDesktopRepository>();
+
+            services.AddScoped<PostNotificationService>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

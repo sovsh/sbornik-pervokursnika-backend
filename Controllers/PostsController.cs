@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
+using SbornikBackend.Services;
 
 namespace SbornikBackend.Controllers
 {
@@ -13,7 +14,6 @@ namespace SbornikBackend.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPost _allPosts;
-
         public PostsController(IPost posts)
         {
             _allPosts = posts;
@@ -27,6 +27,7 @@ namespace SbornikBackend.Controllers
                 return BadRequest();
             var post = _allPosts.CreatePost(postDTO);
             _allPosts.Add(post);
+            PostNotificationService.SendNotifications(postDTO);
             return Ok(post);
         }
 
