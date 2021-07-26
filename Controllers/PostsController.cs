@@ -21,13 +21,13 @@ namespace SbornikBackend.Controllers
 
         [Authorize(Roles = "Bot")]
         [HttpPost]
-        public IActionResult Post(PostDTO postDTO)
+        public IActionResult Post(PostDTO_int postDTO)
         {
             if (postDTO == null)
                 return BadRequest();
             var post = _allPosts.CreatePost(postDTO);
             _allPosts.Add(post);
-            PostNotificationService.SendNotifications(postDTO);
+            PostNotificationService.SendNotifications(_allPosts.OriginalPostIdToDTO(postDTO));
             return Ok(post);
         }
 

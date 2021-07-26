@@ -20,11 +20,11 @@ namespace SbornikBackend.Repositories
         {
             return type switch
             {
-                0 => "Fallback",
-                1 => "Faculty",
-                2 => "Academy",
-                3 => "Institute",
-                _ => "Error"
+                0 => "Подразделение",
+                1 => "Факультет",
+                2 => "Академия",
+                3 => "Институт",
+                _ => "Ошибка"
             };
         }
 

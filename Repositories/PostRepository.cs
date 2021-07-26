@@ -20,16 +20,25 @@ namespace SbornikBackend.Repositories
 
         public bool IsTableHasId(int id) => _context.Posts.Any(e => e.Id == id);
 
+        public PostDTO OriginalPostIdToDTO(PostDTO_int postDTO)
+        {
+            PostDTO originalPost;
+            if (postDTO.OriginalPostId == -1)
+                originalPost = null;
+            else
+                originalPost = Get(postDTO.OriginalPostId);
+            return new PostDTO
+            {
+                Id = postDTO.Id, Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture,
+                Text = postDTO.Text, Contents = postDTO.Contents,
+                Hashtags = postDTO.Hashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment,
+                OriginalPost = originalPost
+            };
+        }
+
         public PostDTO CreatePostDTO(Post post)
         {
-            //var contents = new List<ContentDTO>();
             var hashtags = new List<string>();
-            /*foreach (var id in post.ContentsId)
-            {
-                string uri = _context.Contents.First(e => e.Id == id).Path;
-                var content = new ContentDTO {Id = id, Uri = uri};
-                contents.Add(content);
-            }*/
 
             foreach (var id in post.HashtagsId)
             {
@@ -48,7 +57,7 @@ namespace SbornikBackend.Repositories
             return new PostDTO
             {
                 Id = post.Id, Date = post.Date, Author = post.Author,AuthorPicture = post.AuthorPicture, Text = post.Text, Contents = contents,
-                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPost =originalPost
+                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPost = originalPost
             };
         }
 
@@ -87,6 +96,44 @@ namespace SbornikBackend.Repositories
             {
                 Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
                 HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPost.Id
+            };
+        }
+
+        public Post CreatePost(PostDTO_int postDTO)
+        {
+            var postContents = postDTO.Contents;
+            var listOfContents = new List<int>();
+            foreach (var postContent in postContents)
+            {
+                var content = new Content {Path = postContent.Uri};
+                _context.Contents.Add(content);
+                _context.SaveChanges();
+                listOfContents.Add(content.Id);
+            }
+
+            var postHashtags = postDTO.Hashtags;
+            var listOfHashtags = new List<int>();
+            foreach (var postHashtag in postHashtags)
+            {
+                var found = FindHashtag(postHashtag);
+                if (found == -1)
+                {
+                    var hashtag = new Hashtag {Name = postHashtag};
+                    _context.Hashtags.Add(hashtag);
+                    _context.SaveChanges();
+                    listOfHashtags.Add(hashtag.Id);
+                }
+                else
+                {
+                    var hashtag = _context.Hashtags.First(h => h.Id == found);
+                    listOfHashtags.Add(hashtag.Id);
+                }
+            }
+
+            return new Post
+            {
+                Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
+                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPostId
             };
         }
 
