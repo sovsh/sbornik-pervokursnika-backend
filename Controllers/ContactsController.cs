@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -41,7 +42,7 @@ namespace SbornikBackend.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPut]
-        public IActionResult Put(Contact contact)
+        public IActionResult Put(ContactDTO contact)
         {
             if (contact == null)
                 return BadRequest();

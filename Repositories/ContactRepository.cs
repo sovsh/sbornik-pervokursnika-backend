@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using SbornikBackend.DataAccess;
 using SbornikBackend.Interfaces;
@@ -38,6 +39,17 @@ namespace SbornikBackend.Repositories
             };
         }
 
+        public int GetType(string type)
+        {
+            return type switch
+            {
+                "Дирекция" => 0,
+                "Студсовет" => 1,
+                "Другое" => 2,
+                _ => throw new Exception("Wrong string contact type")
+            };
+        }
+
         public ContactDTO CreateContactDTO(Contact contact)
         {
             var links = new List<string>();
@@ -46,7 +58,7 @@ namespace SbornikBackend.Repositories
             var type = GetType((int) contact.Type);
             return new ContactDTO
             {
-                Id = contact.Id, Type = type, Name = contact.Name, Position = contact.Position, Links = links,
+                Id = contact.Id, FacultyId = contact.FacultyId, Type = type, Name = contact.Name, Position = contact.Position, Links = links,
                 PhoneNumber = contact.PhoneNumber,
                 Photo = contact.Photo
             };
@@ -70,10 +82,11 @@ namespace SbornikBackend.Repositories
 
         public Contact Get(int id) => _context.Contacts.First(c => c.Id == id);
 
-        public void Update(Contact contact)
+        public void Update(ContactDTO contact)
         {
             var dbContact = _context.Contacts.First(e => e.Id == contact.Id);
             dbContact.FacultyId = contact.FacultyId;
+            dbContact.Type = (ContactType)GetType(contact.Type);
             dbContact.Name = contact.Name;
             dbContact.Position = contact.Position;
             dbContact.PhoneNumber = contact.PhoneNumber;

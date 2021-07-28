@@ -5,6 +5,7 @@ namespace SbornikBackend.DTOs
     public class ContactDTO
     {
         public int Id { get; set; }
+        public int FacultyId { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }

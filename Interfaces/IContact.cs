@@ -8,12 +8,13 @@ namespace SbornikBackend.Interfaces
         bool IsTableHasId(int id);
         List<string> GetAllTypes();
         string GetType(int type);
+        int GetType(string type);
         ContactDTO CreateContactDTO(Contact contact);
         List<ContactDTO>CreateContactDTOs(List<Contact> contacts);
         void Add(Contact contact);
         IEnumerable<Contact> GetAll();
         Contact Get(int id);
-        void Update(Contact contact);
+        void Update(ContactDTO contact);
         void Delete(int id);
     }
 }
