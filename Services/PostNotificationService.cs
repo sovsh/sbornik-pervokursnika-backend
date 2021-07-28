@@ -45,11 +45,13 @@ namespace SbornikBackend.Services
                 {
                     Notification = new Notification()
                     {
+                        Title = "New post",
                         Body = postDTO.ToString(),
                     },
                     Topic = hashtag,
                 });
 
+            Console.WriteLine($"{messages.Count}");
             var response = FirebaseMessaging.DefaultInstance.SendAllAsync(messages);
 
             Console.WriteLine($"{response.Result}");

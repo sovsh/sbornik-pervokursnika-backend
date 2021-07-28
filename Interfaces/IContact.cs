@@ -6,6 +6,10 @@ namespace SbornikBackend.Interfaces
     public interface IContact
     {
         bool IsTableHasId(int id);
+        List<string> GetAllTypes();
+        string GetType(int type);
+        ContactDTO CreateContactDTO(Contact contact);
+        List<ContactDTO>CreateContactDTOs(List<Contact> contacts);
         void Add(Contact contact);
         IEnumerable<Contact> GetAll();
         Contact Get(int id);

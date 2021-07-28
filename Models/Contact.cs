@@ -2,6 +2,12 @@
 
 namespace SbornikBackend
 {
+    public enum ContactType : int
+    {
+        Deanery,
+        StudentCouncil,
+        Other,
+    }
     /// <summary>
     /// Контакт сотрудника факультета/студсовета
     /// </summary>
@@ -9,6 +15,7 @@ namespace SbornikBackend
     {
         public int Id { get; set; }
         public int FacultyId { get; set; }
+        public ContactType Type { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
         public string PhoneNumber { get; set; }

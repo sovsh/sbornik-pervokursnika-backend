@@ -30,20 +30,9 @@ namespace SbornikBackend.Repositories
 
         public FacultyDTO CreateFacultyDTO(Faculty faculty)
         {
-            List<ContactDTO> contacts = new List<ContactDTO>();
-            foreach (var contact in _context.Contacts.Where(c => c.FacultyId == faculty.Id))
-            {
-                var links = new List<string>();
-                foreach (var link in contact.Links)
-                    links.Add(link);
-                contacts.Add(new ContactDTO
-                {
-                    Id = contact.Id, Name = contact.Name, Position = contact.Position, Links = links,
-                    PhoneNumber = contact.PhoneNumber,
-                    Photo = contact.Photo
-                });
-
-            }
+            List<ContactDTO> contacts =
+                new ContactRepository(_context).CreateContactDTOs(_context.Contacts
+                    .Where(c => c.FacultyId == faculty.Id).ToList());
 
             string type = GetType((int)faculty.Type);
             string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
