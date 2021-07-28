@@ -12,6 +12,11 @@ namespace SbornikBackend.DTOs
         public string Deanery { get; set; }
         public string Info { get; set; }
         public string Picture { get; set; }
+        public string PhoneNumber { get; set; }
+        public string WebsiteLink { get; set; }
+        public string VkLink { get; set; }
+        public string InstagramLink { get; set; }
+        public string FacebookLink { get; set; }
         public List<ContactDTO> Contacts { get; set; } = new List<ContactDTO>();
     }
 }

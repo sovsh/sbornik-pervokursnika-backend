@@ -16,6 +16,7 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasId(int id) => _context.Faculties.Any(f => f.Id == id);
+
         public string GetType(int type)
         {
             return type switch
@@ -34,12 +35,15 @@ namespace SbornikBackend.Repositories
                 new ContactRepository(_context).CreateContactDTOs(_context.Contacts
                     .Where(c => c.FacultyId == faculty.Id).ToList());
 
-            string type = GetType((int)faculty.Type);
+            string type = GetType((int) faculty.Type);
             string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
-            
+
             return new FacultyDTO
             {
-                Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = type, Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture,
+                Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = type,
+                Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture, PhoneNumber = faculty.PhoneNumber,
+                WebsiteLink = faculty.WebsiteLink, VkLink = faculty.VkLink, InstagramLink = faculty.InstagramLink,
+                FacebookLink = faculty.FacebookLink,
                 Contacts = contacts
             };
 
@@ -67,6 +71,7 @@ namespace SbornikBackend.Repositories
         }
 
         public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
+
         public IEnumerable<FacultySomeInfoDTO> GetAllSomeInfoDTOs()
         {
             return CreateFacultySomeInfoDTOs(GetAll().ToList());
@@ -94,6 +99,11 @@ namespace SbornikBackend.Repositories
             dbFaculty.Type = faculty.Type;
             dbFaculty.Info = faculty.Info;
             dbFaculty.Picture = faculty.Picture;
+            dbFaculty.PhoneNumber = faculty.PhoneNumber;
+            dbFaculty.WebsiteLink = faculty.WebsiteLink;
+            dbFaculty.VkLink = faculty.VkLink;
+            dbFaculty.InstagramLink = faculty.InstagramLink;
+            dbFaculty.FacebookLink = faculty.FacebookLink;
             _context.SaveChanges();
         }
 
