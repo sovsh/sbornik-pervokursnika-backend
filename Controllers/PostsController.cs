@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
@@ -14,6 +11,7 @@ namespace SbornikBackend.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPost _allPosts;
+
         public PostsController(IPost posts)
         {
             _allPosts = posts;
@@ -27,8 +25,8 @@ namespace SbornikBackend.Controllers
                 return BadRequest();
             var post = _allPosts.CreatePost(postDTO);
             _allPosts.Add(post);
-            /*if (postDTO.IsShared == false && postDTO.Hashtags.Count > 0)
-                PostNotificationService.SendNotifications(_allPosts.Get(post.Id));*/
+            if (postDTO.IsShared == false && postDTO.Hashtags.Count > 0)
+                PostNotificationService.SendNotifications(_allPosts.Get(post.Id));
             return Ok(post);
         }
 
