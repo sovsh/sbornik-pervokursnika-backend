@@ -10,7 +10,7 @@ namespace SbornikBackend.DTOs
         public string Author { get; set; }
         public string AuthorPicture { get; set; }
         public string Text { get; set; }
-        public List<ContentDTO> Contents { get; set; } = new List<ContentDTO>();
+        public List<Content> Contents { get; set; } = new List<Content>();
         public List<string> Hashtags { get; set; } = new List<string>();
         public bool IsShared { get; set; }
         public string Comment { get; set; }

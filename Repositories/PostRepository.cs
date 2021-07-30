@@ -20,22 +20,6 @@ namespace SbornikBackend.Repositories
 
         public bool IsTableHasId(int id) => _context.Posts.Any(e => e.Id == id);
 
-        public PostDTO OriginalPostIdToDTO(PostDTO_int postDTO)
-        {
-            PostDTO originalPost;
-            if (postDTO.OriginalPostId == -1)
-                originalPost = null;
-            else
-                originalPost = Get(postDTO.OriginalPostId);
-            return new PostDTO
-            {
-                Id = postDTO.Id, Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture,
-                Text = postDTO.Text, Contents = postDTO.Contents,
-                Hashtags = postDTO.Hashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment,
-                OriginalPost = originalPost
-            };
-        }
-
         public PostDTO CreatePostDTO(Post post)
         {
             var hashtags = new List<string>();
@@ -105,10 +89,9 @@ namespace SbornikBackend.Repositories
             var listOfContents = new List<int>();
             foreach (var postContent in postContents)
             {
-                var content = new Content {Path = postContent.Uri};
-                _context.Contents.Add(content);
+                _context.Contents.Add(postContent);
                 _context.SaveChanges();
-                listOfContents.Add(content.Id);
+                listOfContents.Add(postContent.Id);
             }
 
             var postHashtags = postDTO.Hashtags;
@@ -161,11 +144,6 @@ namespace SbornikBackend.Repositories
             }
 
             _context.SaveChanges();
-        }
-
-        public IEnumerable<Post> SimpleGetAll()
-        {
-            return _context.Posts.ToList();
         }
 
         public IEnumerable<PostDTO> GetAll()
@@ -228,11 +206,6 @@ namespace SbornikBackend.Repositories
             return CreatePostDTOs(_context.Posts.Where(e => e.IsShared == false).OrderByDescending(p => p.Date).Where(p => p.Date < date).Where(p =>
                 EF.Functions.Like(p.Author.ToLower(), $"%{searchString.ToLower()}%") ||
                 EF.Functions.Like(p.Text.ToLower(), $"%{searchString.ToLower()}%")).ToList());
-        }
-
-        public Post SimpleGet(int id)
-        {
-            return _context.Posts.First(e => e.Id == id);
         }
 
         public PostDTO Get(int id)

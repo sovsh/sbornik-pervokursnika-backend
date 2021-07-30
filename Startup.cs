@@ -40,6 +40,7 @@ namespace SbornikBackend
 
             services.AddScoped<IContact, ContactRepository>();
             services.AddScoped<IContent, ContentRepository>();
+            services.AddScoped<IDeaneryTypeRelation, DeaneryTypeRelationRepository>();
             services.AddScoped<IFaculty, FacultyRepository>();
             services.AddScoped<IHashtag, HashtagRepository>();
             services.AddScoped<IPost, PostRepository>();

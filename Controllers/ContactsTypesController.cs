@@ -13,10 +13,11 @@ namespace SbornikBackend.Controllers
         {
             _all = contacts;
         }
-        [HttpGet]
-        public JsonResult Get()
+
+        [HttpGet("{facultyId}")]
+        public JsonResult Get(int facultyId)
         {
-            return new JsonResult(_all.GetAllTypes());
+            return new JsonResult(_all.GetAllTypes(facultyId));
         }
     }
 }

@@ -18,21 +18,26 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasId(int id) => _context.Contacts.Any(f => f.Id == id);
+        public string GetDeaneryType(int facultyId)
+        {
+            var faculty = new FacultyRepository(_context).Get(facultyId);
+            return _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
+        }
 
-        public List<string> GetAllTypes()
+        public List<string> GetAllTypes(int facultyId)
         {
             var result = new List<string>();
-            result.Add("Дирекция");
+            result.Add(GetDeaneryType(facultyId));
             result.Add("Студсовет");
             result.Add("Другое");
             return result;
         }
 
-        public string GetType(int type)
+        public string GetType(Contact contact)
         {
-            return type switch
+            return (int)contact.Type switch
             {
-                0 => "Дирекция",
+                0 => GetDeaneryType(contact.FacultyId),
                 1 => "Студсовет",
                 2 => "Другое",
                 _ => "Error"
@@ -43,6 +48,8 @@ namespace SbornikBackend.Repositories
         {
             return type switch
             {
+                "Руководство подразделения" => 0,
+                "Деканат" => 0,
                 "Дирекция" => 0,
                 "Студсовет" => 1,
                 "Другое" => 2,
@@ -55,7 +62,7 @@ namespace SbornikBackend.Repositories
             var links = new List<string>();
             foreach (var link in contact.Links)
                 links.Add(link);
-            var type = GetType((int) contact.Type);
+            var type = GetType(contact);
             return new ContactDTO
             {
                 Id = contact.Id, FacultyId = contact.FacultyId, Type = type, Name = contact.Name, Position = contact.Position, Links = links,

@@ -8,22 +8,18 @@ namespace SbornikBackend.Interfaces
     public interface IPost
     {
         bool IsTableHasId(int id);
-        PostDTO OriginalPostIdToDTO(PostDTO_int postDTO);
         PostDTO CreatePostDTO(Post post);
         Post CreatePost(PostDTO postDTO);
         Post CreatePost(PostDTO_int postDTO);
-
         List<PostDTO> CreatePostDTOs(List<int> ids);
         List<PostDTO> CreatePostDTOs(List<Post> posts);
         void Add(Post post);
-        IEnumerable<Post> SimpleGetAll();
         IEnumerable<PostDTO> GetAll();
         IEnumerable<PostDTO> GetAll(List<int> hashtags);
         IEnumerable<PostDTO> GetAll(DateTime date);
         IEnumerable<PostDTO> GetAll(List<int> hashtags, DateTime date);
         IEnumerable<PostDTO> GetAll(string searchString);
         IEnumerable<PostDTO> GetAll(string searchString, DateTime date);
-        Post SimpleGet(int id);
         PostDTO Get(int id);
         PostDTO GetLast();
         PostDTO GetLast(List<int> hashtagsId);

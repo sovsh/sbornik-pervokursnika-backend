@@ -6,8 +6,9 @@ namespace SbornikBackend.Interfaces
     public interface IContact
     {
         bool IsTableHasId(int id);
-        List<string> GetAllTypes();
-        string GetType(int type);
+        string GetDeaneryType(int facultyId);
+        List<string> GetAllTypes(int facultyId);
+        string GetType(Contact contact);
         int GetType(string type);
         ContactDTO CreateContactDTO(Contact contact);
         List<ContactDTO>CreateContactDTOs(List<Contact> contacts);
