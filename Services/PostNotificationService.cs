@@ -6,6 +6,7 @@ using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Mvc;
 using SbornikBackend.DTOs;
+using SbornikBackend.Repositories;
 
 namespace SbornikBackend.Services
 {
@@ -18,20 +19,22 @@ namespace SbornikBackend.Services
                 Credential = GoogleCredential.FromFile("serviceAccountKey.json"),
             });
         }
-        
-        public static Task SendNotifications(PostDTO postDTO)
+
+        public static Task SendNotifications(Post post, PostDTO postDTO)
         {
             var messages = new List<Message>();
-            
-            foreach(var hashtag in postDTO.Hashtags)
+
+            string body = post.IsShared == false ? post.Text : postDTO.OriginalPost.Text;
+
+            foreach (var hashtag in post.HashtagsId)
                 messages.Add(new Message()
                 {
                     Notification = new Notification()
                     {
-                        Title = hashtag,
-                        Body = postDTO.ToString(),
+                        Title = post.Author,
+                        Body = body
                     },
-                    Topic = "new_post",
+                    Topic = hashtag.ToString()
                 });
 
             //Console.WriteLine($"{messages.Count}");

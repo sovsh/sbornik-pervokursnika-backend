@@ -26,7 +26,7 @@ namespace SbornikBackend.Controllers
             var post = _allPosts.CreatePost(postDTO);
             _allPosts.Add(post);
             if (postDTO.IsShared == false && postDTO.Hashtags.Count > 0)
-                PostNotificationService.SendNotifications(_allPosts.Get(post.Id));
+                PostNotificationService.SendNotifications(post, _allPosts.Get(post.Id));
             return Ok(post);
         }
 
