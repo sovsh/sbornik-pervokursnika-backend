@@ -10,8 +10,9 @@ namespace SbornikBackend
     /// </summary>
     public enum UserBotRole : int
     {
-        Moderator,
-        Administrator
+        Unauthorized,
+        Administrator,
+        Moderator
     }
 
     /// <summary>

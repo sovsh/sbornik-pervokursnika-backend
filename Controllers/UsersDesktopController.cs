@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -43,12 +44,14 @@ namespace SbornikBackend.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPut]
-        public IActionResult Put(UserDesktop user)
+        public IActionResult Put(UserDesktopPutDTO user)
         {
             if (user == null)
                 return BadRequest();
             if (!_all.IsTableHasLogin(user.Login))
                 return BadRequest();
+            if (!_all.ArePasswordsMatch(user.Login, user.OldPassword))
+                return BadRequest("Passwords don't match");
             _all.Update(user);
             return Ok(user);
         }

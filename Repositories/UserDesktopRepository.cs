@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SbornikBackend.DataAccess;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Repositories
@@ -15,6 +16,20 @@ namespace SbornikBackend.Repositories
         }
 
         public bool IsTableHasLogin(string login) => _context.UsersDesktop.Any(e => e.Login.Equals(login));
+        public bool ArePasswordsMatch(string login, string password) => _context.UsersDesktop.First(e=>e.Login.Equals(login)).Password.Equals(password);
+
+        public UserDesktopGetDTO CreateUserDesktopGetDTO(UserDesktop user)
+        {
+            return new UserDesktopGetDTO
+            {
+                Login = user.Login,
+                Role = user.Role
+            };
+        }
+
+        public IEnumerable<UserDesktopGetDTO> CreateUserDesktopGetDTOs(List<UserDesktop> users) =>
+            users.Select(CreateUserDesktopGetDTO).ToList();
+        
 
         public void Add(UserDesktop user)
         {
@@ -22,14 +37,16 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<UserDesktop> GetAll() => _context.UsersDesktop.OrderBy(e => e.Login).ToList();
+        public IEnumerable<UserDesktopGetDTO> GetAll() =>
+            CreateUserDesktopGetDTOs(_context.UsersDesktop.ToList()).ToList();
 
-        public UserDesktop Get(string login) => _context.UsersDesktop.First(e => e.Login.Equals(login));
+        public UserDesktopGetDTO Get(string login) =>
+            CreateUserDesktopGetDTO(_context.UsersDesktop.First(e => e.Login.Equals(login)));
 
-        public void Update(UserDesktop user)
+        public void Update(UserDesktopPutDTO user)
         {
             var dbUser = _context.UsersDesktop.First(e => e.Login.Equals(user.Login));
-            dbUser.Password = user.Password;
+            dbUser.Password = user.NewPassword;
             dbUser.Role = user.Role;
             _context.SaveChanges();
         }
