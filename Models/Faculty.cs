@@ -32,5 +32,7 @@ namespace SbornikBackend
         public string VkLink { get; set; }
         public string InstagramLink { get; set; }
         public string FacebookLink { get; set; }
+        public string SicLink { get; set; }
+        public string Email { get; set; }
     }
 }

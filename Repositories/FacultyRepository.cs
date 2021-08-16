@@ -43,7 +43,7 @@ namespace SbornikBackend.Repositories
                 Id = faculty.Id, Name = faculty.Name, Abbreviation = faculty.Abbreviation, Type = type,
                 Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture, PhoneNumber = faculty.PhoneNumber,
                 WebsiteLink = faculty.WebsiteLink, VkLink = faculty.VkLink, InstagramLink = faculty.InstagramLink,
-                FacebookLink = faculty.FacebookLink,
+                FacebookLink = faculty.FacebookLink, SicLink = faculty.SicLink, Email = faculty.Email,
                 Contacts = contacts
             };
 
@@ -104,6 +104,8 @@ namespace SbornikBackend.Repositories
             dbFaculty.VkLink = faculty.VkLink;
             dbFaculty.InstagramLink = faculty.InstagramLink;
             dbFaculty.FacebookLink = faculty.FacebookLink;
+            dbFaculty.SicLink = faculty.SicLink;
+            dbFaculty.Email = faculty.Email;
             _context.SaveChanges();
         }
 
