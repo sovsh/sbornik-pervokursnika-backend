@@ -216,12 +216,22 @@ namespace SbornikBackend.Repositories
 
         public PostDTO GetLast()
         {
-            return GetAll().First();
+            return CreatePostDTO(_context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date).ToList()
+                .First());
         }
 
         public PostDTO GetLast(List<int> hashtagsId)
         {
-            return GetAll(hashtagsId).First();
+            var res = new HashSet<int>();
+            foreach (var hashtag in hashtagsId)
+            {
+                var posts = _context.Posts.Where(e => e.IsShared == false).OrderByDescending(e => e.Date).Where(e => e.HashtagsId.Contains(hashtag))
+                    .Select(e => e.Id
+                    ).ToList();
+                foreach (var id in posts)
+                    res.Add(id);
+            } 
+            return Get(res.ToList().First());
         }
 
         public void Update(Post post)
