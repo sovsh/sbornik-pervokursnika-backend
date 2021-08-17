@@ -41,7 +41,7 @@ namespace SbornikBackend.Repositories
             return new PostDTO
             {
                 Id = post.Id, Date = post.Date, Author = post.Author,AuthorPicture = post.AuthorPicture, Text = post.Text, Contents = contents,
-                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPost = originalPost
+                Hashtags = hashtags, IsShared = post.IsShared, Comment = post.Comment, OriginalPost = originalPost, VkPostLink = post.VkPostLink
             };
         }
 
@@ -79,7 +79,7 @@ namespace SbornikBackend.Repositories
             return new Post
             {
                 Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
-                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPost.Id
+                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPost.Id, VkPostLink = postDTO.VkPostLink
             };
         }
 
@@ -116,7 +116,7 @@ namespace SbornikBackend.Repositories
             return new Post
             {
                 Date = postDTO.Date, Author = postDTO.Author, AuthorPicture = postDTO.AuthorPicture, Text = postDTO.Text, ContentsId = listOfContents,
-                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPostId
+                HashtagsId = listOfHashtags, IsShared = postDTO.IsShared, Comment = postDTO.Comment, OriginalPostId = postDTO.OriginalPostId, VkPostLink = postDTO.VkPostLink
             };
         }
 
@@ -245,6 +245,7 @@ namespace SbornikBackend.Repositories
             dbPost.IsShared = post.IsShared;
             dbPost.Comment = post.Comment;
             dbPost.OriginalPostId = post.OriginalPostId;
+            dbPost.VkPostLink = post.VkPostLink;
             _context.SaveChanges();
         }
 

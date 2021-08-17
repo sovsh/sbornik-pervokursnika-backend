@@ -20,6 +20,7 @@ namespace SbornikBackend.DTOs
         public bool IsShared { get; set; }
         public string Comment { get; set; }
         public PostDTO OriginalPost { get; set; }
+        public string VkPostLink { get; set; }
         private bool Equals(PostDTO other)
         {
 

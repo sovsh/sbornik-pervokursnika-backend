@@ -15,5 +15,6 @@ namespace SbornikBackend.DTOs
         public bool IsShared { get; set; }
         public string Comment { get; set; }
         public int OriginalPostId { get; set; }
+        public string VkPostLink { get; set; }
     }
 }
