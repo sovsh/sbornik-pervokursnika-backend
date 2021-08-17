@@ -10,6 +10,7 @@ namespace SbornikBackend.Interfaces
         bool IsTableHasHashtag(int id, string name);
         void Add(Hashtag hashtag);
         IEnumerable<Hashtag> GetAll();
+        IEnumerable<Hashtag> GetAllSpecial();
         Hashtag Get(int id);
         List<int> GetListOfHashtagsIds(List<string> hashtags);
         void Update(Hashtag hashtag);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SbornikBackend.DTOs;
 using SbornikBackend.Interfaces;
 
 namespace SbornikBackend.Controllers
@@ -16,7 +17,7 @@ namespace SbornikBackend.Controllers
         
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult Post(Faculty faculty)
+        public IActionResult Post(FacultyPostDTO faculty)
         {
             if (faculty == null) 
                 return BadRequest();

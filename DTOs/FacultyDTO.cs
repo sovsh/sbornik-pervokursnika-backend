@@ -19,6 +19,7 @@ namespace SbornikBackend.DTOs
         public string FacebookLink { get; set; }
         public string SicLink { get; set; }
         public string Email { get; set; }
+        public string SpecialHashtag { get; set; }
         public List<ContactDTO> Contacts { get; set; } = new List<ContactDTO>();
     }
 }

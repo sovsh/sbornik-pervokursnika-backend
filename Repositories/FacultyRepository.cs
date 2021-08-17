@@ -37,6 +37,7 @@ namespace SbornikBackend.Repositories
 
             string type = GetType((int) faculty.Type);
             string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
+            string specialHashtag = new HashtagRepository(_context).Get(faculty.SpecialHashtagId).Name;
 
             return new FacultyDTO
             {
@@ -44,9 +45,24 @@ namespace SbornikBackend.Repositories
                 Deanery = deanery, Info = faculty.Info, Picture = faculty.Picture, PhoneNumber = faculty.PhoneNumber,
                 WebsiteLink = faculty.WebsiteLink, VkLink = faculty.VkLink, InstagramLink = faculty.InstagramLink,
                 FacebookLink = faculty.FacebookLink, SicLink = faculty.SicLink, Email = faculty.Email,
+                SpecialHashtag = specialHashtag,
                 Contacts = contacts
             };
 
+        }
+
+        public Faculty CreateFaculty(FacultyPostDTO facultyDTO)
+        {
+            var hashtag = new Hashtag {Name = facultyDTO.Abbreviation, IsSpecial = true};
+            new HashtagRepository(_context).Add(hashtag);
+            return new Faculty
+            {
+                Name = facultyDTO.Name, Abbreviation = facultyDTO.Abbreviation, Type = facultyDTO.Type,
+                Info = facultyDTO.Info, Picture = facultyDTO.Picture, PhoneNumber = facultyDTO.PhoneNumber,
+                WebsiteLink = facultyDTO.WebsiteLink, VkLink = facultyDTO.VkLink,
+                InstagramLink = facultyDTO.InstagramLink, FacebookLink = facultyDTO.FacebookLink,
+                SicLink = facultyDTO.SicLink, Email = facultyDTO.Email, SpecialHashtagId = hashtag.Id
+            };
         }
 
         public FacultySomeInfoDTO CreateFacultySomeInfoDTO(Faculty faculty)
@@ -69,6 +85,8 @@ namespace SbornikBackend.Repositories
             _context.Faculties.Add(faculty);
             _context.SaveChanges();
         }
+
+        public void Add(FacultyPostDTO facultyDTO) => Add(CreateFaculty(facultyDTO));
 
         public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
 
@@ -106,6 +124,8 @@ namespace SbornikBackend.Repositories
             dbFaculty.FacebookLink = faculty.FacebookLink;
             dbFaculty.SicLink = faculty.SicLink;
             dbFaculty.Email = faculty.Email;
+            new HashtagRepository(_context).Update(new Hashtag
+                {Id = faculty.SpecialHashtagId, Name = faculty.Abbreviation, IsSpecial = true});
             _context.SaveChanges();
         }
 

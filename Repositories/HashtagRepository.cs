@@ -29,7 +29,8 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public IEnumerable<Hashtag> GetAll() => _context.Hashtags.OrderBy(e=>e.Id).ToList();
+        public IEnumerable<Hashtag> GetAll() => _context.Hashtags.Where(e => !e.IsSpecial).OrderBy(e => e.Id).ToList();
+        public IEnumerable<Hashtag> GetAllSpecial()=>_context.Hashtags.Where(e => e.IsSpecial).OrderBy(e => e.Id).ToList();
 
         public Hashtag Get(int id) => _context.Hashtags.First(h => h.Id == id);
         
@@ -50,6 +51,7 @@ namespace SbornikBackend.Repositories
         {
             var dbHashtag = _context.Hashtags.First(e => e.Id == hashtag.Id);
             dbHashtag.Name = hashtag.Name;
+            dbHashtag.IsSpecial = hashtag.IsSpecial;
             _context.SaveChanges();
         }
 

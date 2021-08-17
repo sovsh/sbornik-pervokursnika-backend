@@ -1,25 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace SbornikBackend
+﻿namespace SbornikBackend.DTOs
 {
-    /// <summary>
-    /// Тип подразделения
-    /// </summary>
-    // 0 - fallback - подразделение
-    // 1 - факультет
-    // 2 - академия
-    // 3 - институт
-    public enum DivisionType : int
-    {
-        TypeFallback,
-        TypeFaculty,
-        TypeAcademy,
-        TypeInstitute
-    }
-    /// <summary>
-    /// Подразделение
-    /// </summary>
-    public class Faculty
+    public class FacultyPostDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -34,6 +15,5 @@ namespace SbornikBackend
         public string FacebookLink { get; set; }
         public string SicLink { get; set; }
         public string Email { get; set; }
-        public int SpecialHashtagId { get; set; }
     }
 }
