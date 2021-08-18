@@ -23,8 +23,8 @@ namespace SbornikBackend.Controllers
                 return BadRequest();
             if (_all.IsTableHasId(faculty.Id)) 
                 return BadRequest();
-            _all.Add(faculty);
-            return Ok(faculty);
+            var resFaculty = _all.Add(faculty);
+            return Ok(resFaculty);
         }
         [HttpGet]
         public JsonResult Get()

@@ -86,7 +86,12 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
-        public void Add(FacultyPostDTO facultyDTO) => Add(CreateFaculty(facultyDTO));
+        public Faculty Add(FacultyPostDTO facultyDTO)
+        {
+            var faculty = CreateFaculty(facultyDTO);
+            Add(faculty);
+            return faculty;
+        }
 
         public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
 

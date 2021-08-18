@@ -12,7 +12,7 @@ namespace SbornikBackend.Interfaces
         FacultySomeInfoDTO CreateFacultySomeInfoDTO(Faculty faculty);
         IEnumerable<FacultySomeInfoDTO> CreateFacultySomeInfoDTOs(List<Faculty> faculties);
         void Add(Faculty faculty);
-        void Add(FacultyPostDTO facultyDTO);
+        Faculty Add(FacultyPostDTO facultyDTO);
         IEnumerable<Faculty> GetAll();
         IEnumerable<FacultySomeInfoDTO> GetAllSomeInfoDTOs();
         Faculty Get(int id);
