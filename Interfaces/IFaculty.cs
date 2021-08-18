@@ -18,7 +18,7 @@ namespace SbornikBackend.Interfaces
         Faculty Get(int id);
         FacultyDTO GetDTO(int id);
         FacultyDTO GetDTO(string name);
-        void Update(Faculty faculty);
+        void Update(FacultyPostDTO faculty);
         void Delete(int id);
     }
 }

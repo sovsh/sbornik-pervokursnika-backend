@@ -109,7 +109,7 @@ namespace SbornikBackend.Repositories
             return CreateFacultyDTO(faculty);
         }
 
-        public void Update(Faculty faculty)
+        public void Update(FacultyPostDTO faculty)
         {
             var dbFaculty = _context.Faculties.First(e => e.Id == faculty.Id);
             dbFaculty.Name = faculty.Name;
@@ -125,7 +125,7 @@ namespace SbornikBackend.Repositories
             dbFaculty.SicLink = faculty.SicLink;
             dbFaculty.Email = faculty.Email;
             new HashtagRepository(_context).Update(new Hashtag
-                {Id = faculty.SpecialHashtagId, Name = faculty.Abbreviation, IsSpecial = true});
+                {Id = dbFaculty.SpecialHashtagId, Name = faculty.Abbreviation, IsSpecial = true});
             _context.SaveChanges();
         }
 

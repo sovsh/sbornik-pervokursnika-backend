@@ -39,7 +39,7 @@ namespace SbornikBackend.Controllers
         
         [Authorize(Roles = "User")]
         [HttpPut]
-        public IActionResult Put(Faculty faculty)
+        public IActionResult Put(FacultyPostDTO faculty)
         {
             if (faculty == null) 
                 return BadRequest();
