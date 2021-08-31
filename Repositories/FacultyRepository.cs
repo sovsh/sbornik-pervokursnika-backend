@@ -93,7 +93,7 @@ namespace SbornikBackend.Repositories
             return faculty;
         }
 
-        public IEnumerable<Faculty> GetAll() => _context.Faculties.OrderBy(e => e.Id).ToList();
+        public IEnumerable<Faculty> GetAll() => _context.Faculties.ToList().OrderBy(e => e.Name);
 
         public IEnumerable<FacultySomeInfoDTO> GetAllSomeInfoDTOs()
         {
