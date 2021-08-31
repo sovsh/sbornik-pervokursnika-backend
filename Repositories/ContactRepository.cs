@@ -104,6 +104,16 @@ namespace SbornikBackend.Repositories
             _context.SaveChanges();
         }
 
+        public void Swap(int id1, int id2)
+        {
+            var contact1 = CreateContactDTO(Get(id1));
+            contact1.Id = id2;
+            var contact2 = CreateContactDTO(Get(id2));
+            contact2.Id = id1;
+            Update(contact1);
+            Update(contact2);
+        }
+
         public void Delete(int id)
         {
             var contact = Get(id);

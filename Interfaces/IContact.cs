@@ -16,6 +16,7 @@ namespace SbornikBackend.Interfaces
         IEnumerable<Contact> GetAll();
         Contact Get(int id);
         void Update(ContactDTO contact);
+        void Swap(int id1, int id2);
         void Delete(int id);
     }
 }
