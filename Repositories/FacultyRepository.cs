@@ -35,6 +35,22 @@ namespace SbornikBackend.Repositories
                 new ContactRepository(_context).CreateContactDTOs(_context.Contacts
                     .Where(c => c.FacultyId == faculty.Id).ToList());
 
+            /*contacts = contacts.Where(c => new ContactRepository(_context).GetType(c.Type) == 0)
+                .OrderBy(c => c.PriorityNumber)
+                .Union(contacts.Where(c => new ContactRepository(_context).GetType(c.Type) == 1)
+                    .OrderBy(c => c.PriorityNumber)).Union(contacts
+                    .Where(c => new ContactRepository(_context).GetType(c.Type) == 2).OrderBy(c => c.PriorityNumber)).ToList();*/
+            contacts = contacts.Where(c => new ContactRepository(_context).GetType(c.Type) == 0 && c.PriorityNumber > 0)
+                .OrderBy(c => c.PriorityNumber).Union(contacts.Where(c =>
+                    new ContactRepository(_context).GetType(c.Type) == 0 && c.PriorityNumber == -1))
+                .Union(contacts.Where(c => new ContactRepository(_context).GetType(c.Type) == 1 && c.PriorityNumber > 0)
+                    .OrderBy(c => c.PriorityNumber)).Union(contacts.Where(c =>
+                    new ContactRepository(_context).GetType(c.Type) == 1 && c.PriorityNumber == -1)).Union(contacts
+                    .Where(c => new ContactRepository(_context).GetType(c.Type) == 2 && c.PriorityNumber > 0)
+                    .OrderBy(c => c.PriorityNumber)).Union(contacts.Where(c =>
+                    new ContactRepository(_context).GetType(c.Type) == 2 && c.PriorityNumber == -1)).ToList();
+                       
+
             string type = GetType((int) faculty.Type);
             string deanery = _context.DeaneryTypesRelation.First(e => e.Type == faculty.Type).DeaneryName;
             string specialHashtag = new HashtagRepository(_context).Get(faculty.SpecialHashtagId).Name;

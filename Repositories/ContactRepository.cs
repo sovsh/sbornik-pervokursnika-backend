@@ -65,7 +65,7 @@ namespace SbornikBackend.Repositories
             var type = GetType(contact);
             return new ContactDTO
             {
-                Id = contact.Id, FacultyId = contact.FacultyId, Type = type, Name = contact.Name, Position = contact.Position, Links = links,
+                Id = contact.Id, FacultyId = contact.FacultyId, Type = type, PriorityNumber = contact.PriorityNumber, Name = contact.Name, Position = contact.Position, Links = links,
                 PhoneNumber = contact.PhoneNumber,
                 Photo = contact.Photo
             };
@@ -94,6 +94,7 @@ namespace SbornikBackend.Repositories
             var dbContact = _context.Contacts.First(e => e.Id == contact.Id);
             dbContact.FacultyId = contact.FacultyId;
             dbContact.Type = (ContactType)GetType(contact.Type);
+            dbContact.PriorityNumber = contact.PriorityNumber;
             dbContact.Name = contact.Name;
             dbContact.Position = contact.Position;
             dbContact.PhoneNumber = contact.PhoneNumber;
